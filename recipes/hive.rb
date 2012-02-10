@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudera
 # Recipe:: hive
 #
-# Author:: Cliff Erson (<cdickerson@riotgames.com>)
+# Author:: Istvan Szukacs (<istvan.szukacs@gmail.com>)
 # Copyright 2012, Riot Games
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
