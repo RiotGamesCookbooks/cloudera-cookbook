@@ -26,7 +26,7 @@ directory "/var/lib/hadoop/tmpdir" do
   owner "hdfs"
   group "hdfs"
   action :create
-  recrusive true
+  recursive true
 end
 
 service "hadoop-#{node[:hadoop][:version]}-datanode" do
