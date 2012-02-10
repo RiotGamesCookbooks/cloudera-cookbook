@@ -9,4 +9,4 @@ version          "0.0.1"
   supports os
 end
 
-depends 'java', '> 1.3.1'
+depends 'java', '>= 1.3.1'
