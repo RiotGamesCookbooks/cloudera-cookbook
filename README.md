@@ -4,7 +4,7 @@ Installs and configures [Cloudera](http://www.cloudera.com/)
 
 # License and Author
 
-Author:: Cliff Erson (<cdickerson@riotgames.com>)
+Author:: Cliff Erson (<cerson@me.com>)
 
 Author:: Jamie Winsor (<jamie@vialstudios.com>)
 
