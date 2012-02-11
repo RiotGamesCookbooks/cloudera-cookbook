@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudera
 # Recipe:: default
 #
-# Author:: Cliff Erson (<cdickerson@riotgames.com>)
+# Author:: Cliff Erson (<cerson@me.com>)
 # Copyright 2012, Riot Games
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
