@@ -27,3 +27,4 @@ default[:hadoop][:core_site] = Array.new
 #  { :name => 'fs.default.name', :value => 'hdfs://laxhadoop1-001:54310', :description => 'farts' },
 #  { :name =>
 
+default[:java][:java_home]					= "/usr"

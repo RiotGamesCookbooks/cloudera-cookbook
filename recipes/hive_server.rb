@@ -20,6 +20,16 @@
 
 package "hadoop-hive-server"
 
+template "/etc/init.d/hadoop-hive-server" do
+  source "hadoop_hive_server.erb"
+	mode 0755
+  owner "root"
+  group "root"
+  variables(
+    :java_home => node[:java][:java_home]
+  )
+end
+
 service "hadoop-hive-server" do
   action [ :start, :enable ]
 end

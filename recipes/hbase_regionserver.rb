@@ -20,6 +20,16 @@
 
 package "hadoop-hbase-regionserver"
 
+template "/etc/init.d/hadoop-hbase-regionserver" do
+  source "hadoop_hbase_regionserver.erb"
+  mode 0755
+  owner "root"
+  group "root"
+  variables(
+    :java_home => node[:java][:java_home]
+  )
+end
+
 service "hadoop-hbase-regionserver" do
   action [ :start, :enable ]
 end
