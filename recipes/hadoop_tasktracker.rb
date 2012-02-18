@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe "cloudera::repo"
+
 package "hadoop-#{node[:hadoop][:version]}-tasktracker"
 
 # Create some data dirs. We might not need this

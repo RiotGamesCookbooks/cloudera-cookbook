@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe "cloudera::repo"
+
 package "hadoop-#{node[:hadoop][:version]}-jobtracker" do
   action :install
 end

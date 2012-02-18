@@ -19,16 +19,56 @@
 #
 
 include_recipe "java"
+include_recipe "cloudera::repo"
+
 package "hadoop-#{node[:hadoop][:version]}"
 
-%w{tmpdir mapred}.each do |dir|
-  directory "/var/lib/hadoop/tmpdir" do
-    mode 0755
-    #owner "#{node[:hadoop][:user]}"
-    #group "#{node[:hadoop][:group]}"
-    owner "mapred"
-    group "mapred"
+directory "/var/lib/hadoop/tmpdir" do
+  mode 0755
+  #owner "#{node[:hadoop][:user]}"
+  #group "#{node[:hadoop][:group]}"
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  recursive true
+end
+
+directory "/var/lib/hadoop/mapred" do
+  mode 0755
+  #owner "#{node[:hadoop][:user]}"
+  #group "#{node[:hadoop][:group]}"
+  owner "mapred"
+  group "mapred"
+  action :create
+  recursive true
+end
+
+# TODO  remove this shit and templitize the recipes
+# Copy the riot settings over - we dont want this - move to roles via array of hashes
+
+directory "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef" do
+  mode 0750
+  owner "root"
+  group "root"
+  action :create
+  recursive true
+end
+
+%w{
+  core-site.xml
+  fair-scheduler.xml
+  hadoop-env.sh
+  hadoop-metrics.properties
+  hdfs-site.xml
+  log4j.properties
+  mapred-site.xml
+}.each do |file|
+  cookbook_file "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/#{|file|}" do
+    mode 0750
+    owner "hdfs"
+    group "hdfs"
     action :create
-    recursive true
   end
 end
+
+
