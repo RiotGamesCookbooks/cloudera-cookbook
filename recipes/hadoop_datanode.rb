@@ -20,8 +20,8 @@
 
 include_recipe "cloudera"
 
-package "hadoop-#{node[:hadoop][:version]}-tasktracker"
+package "hadoop-#{node[:hadoop][:version]}-datanode"
 
-service "hadoop-#{node[:hadoop][:version]}-tasktracker" do
+service "hadoop-#{node[:hadoop][:version]}-datanode" do
   action [ :start, :enable ]
 end
