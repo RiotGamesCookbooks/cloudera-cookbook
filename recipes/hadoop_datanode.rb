@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "cloudera::repo"
+include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-tasktracker"
 

@@ -43,9 +43,6 @@ directory "/var/lib/hadoop/mapred" do
   recursive true
 end
 
-# TODO  remove this shit and templitize the recipes
-# Copy the riot settings over - we dont want this - move to roles via array of hashes
-
 directory "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef" do
   mode 0750
   owner "root"
@@ -53,6 +50,9 @@ directory "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef" do
   action :create
   recursive true
 end
+
+# TODO  remove this shit and templitize the recipes
+# Copy the riot settings over - we dont want this - move to roles via array of hashes
 
 %w{
   core-site.xml
@@ -63,7 +63,8 @@ end
   log4j.properties
   mapred-site.xml
 }.each do |file|
-  cookbook_file "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/#{|file|}" do
+  cookbook_file "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/#{file}" do
+    source "conf/#{file}"
     mode 0750
     owner "hdfs"
     group "hdfs"
@@ -71,4 +72,6 @@ end
   end
 end
 
-
+execute "update hadoop alternatives" do
+  command "alternatives --install /etc/hadoop-0.20/conf hadoop-0.20-conf /etc/hadoop-0.20/conf.chef 50"
+end

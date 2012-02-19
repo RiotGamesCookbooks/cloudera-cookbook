@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "cloudera::repo"
+include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-namenode"
 
@@ -38,13 +38,13 @@ execute "make mapreduce dir file system" do
   command "hadoop fs -mkdir /mapred"
   creates "/mapred"
   user "hdfs"
-  environment ({'JAVA_HOME' => '/usr'})
+  environment ({'JAVA_HOME' => '/usr'}) # TODO this should not be hard coded
   action :run
 end
 
 execute "chown /mapred dir" do
   command "haddop fs -chown mapred /mapred"
   user "hdfs"
-  environment ({'JAVA_HOME' => '/usr'})
+  environment ({'JAVA_HOME' => '/usr'}) # TODO this should not be hard coded
   action :run
 end

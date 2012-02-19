@@ -1,4 +1,3 @@
-
 execute "yum makecache" do
   action :nothing
 end
@@ -9,5 +8,4 @@ template "/etc/yum.repos.d/cloudera.repo" do
   #source "cloudera.repo.erb"
   notifies :run, resources("execute[yum makecache]"), :immediately
 end
-
 
