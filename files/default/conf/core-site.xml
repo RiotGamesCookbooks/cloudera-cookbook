@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+#defaults will be caught by hadoop. dont need to provid
+#you can have no namenode
+
+<configuration>
+	<property>
+	  <name>fs.default.name</name>
+	  <value>hdfs://laxhadoop1-001:54310</value> # Name node ip and port
+	  <description>The name of the default file system.  A URI whose
+	  scheme and authority determine the FileSystem implementation.  The
+	  uri's scheme determines the config property (fs.SCHEME.impl) naming
+	  the FileSystem implementation class.  The uri's authority is used to
+	  determine the host, port, etc. for a filesystem.</description>
+	</property>
+	<property>
+	  <name>dfs.hosts.exclude</name>
+	  <value>/etc/hadoop-0.20/conf.riot/exclude</value> # list of boxes - might not need now
+	  <description>hosts that don't belong to HDFS cluster</description>
+	</property>
+	<property>
+	  <name>fs.inmemory.size.mb</name> # need a sane default
+	  <value>200</value>
+	</property>
+	<property>
+	  <name>io.sort.factor</name> # 
+	  <value>100</value>
+	</property>
+	<property>
+	  <name>io.sort.mb</name>
+	  <value>200</value>
+	</property>
+	<property>
+	  <name>io.file.buffer.size</name>
+	  <value>131072</value>
+	</property>
+
+</configuration>
