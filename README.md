@@ -2,6 +2,9 @@
 
 Installs and configures [Cloudera](http://www.cloudera.com/)
 
+# Status
+Still under active development and testing. YMMV
+
 # License and Author
 
 Author:: Cliff Erson (<cerson@me.com>)
