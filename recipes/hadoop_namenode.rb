@@ -22,6 +22,17 @@ include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-namenode"
 
+template "/usr/lib/hadoop-0.20/bin/hadoop-config.sh" do
+  source "hadoop_config.erb"
+  mode 0755
+  owner "root"
+  group "root"
+  variables(
+    :java_home => node[:java][:java_home]
+  )
+end
+
+
 service "hadoop-#{node[:hadoop][:version]}-namenode" do
   action [ :start, :enable ]
 end

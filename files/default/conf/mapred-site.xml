@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
+<!--
 # key value from symbols
+-->
 
 <!-- Put site-specific property overrides in this file. -->
 

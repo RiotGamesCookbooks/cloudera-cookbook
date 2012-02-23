@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
+<!--
 #defaults will be caught by hadoop. dont need to provid
 #you can have no namenode
+-->
 
 <configuration>
 	<property>
