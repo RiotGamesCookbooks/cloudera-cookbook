@@ -25,8 +25,6 @@ package "hadoop-#{node[:hadoop][:version]}"
 
 directory "/var/lib/hadoop/tmpdir" do
   mode 0755
-  #owner "#{node[:hadoop][:user]}"
-  #group "#{node[:hadoop][:group]}"
   owner "hdfs"
   group "hdfs"
   action :create
@@ -35,8 +33,6 @@ end
 
 directory "/var/lib/hadoop/mapred" do
   mode 0755
-  #owner "#{node[:hadoop][:user]}"
-  #group "#{node[:hadoop][:group]}"
   owner "mapred"
   group "mapred"
   action :create
@@ -51,13 +47,43 @@ directory "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef" do
   recursive true
 end
 
+namenode = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_namenode_server").first
+
+coreSiteVars = { :options => node[:hadoop][:core_site] }
+coreSiteVars[:namenode_ip] = namenode[:ipaddress] if namenode
+
+template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/core-site.xml" do
+  mode 0750
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables coreSiteVars
+end
+
+template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hadoop-env.sh" do
+  mode 0750
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables( :options => node[:hadoop][:hadoop_env] )
+end
+
+template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/fair-scheduler.xml" do
+  mode 0750
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables( :options => node[:hadoop][:config][:fair_scheduler] )
+end
+
+
+
+
 # TODO  remove this shit and templitize the recipes
 # Copy the riot settings over - we dont want this - move to roles via array of hashes
+# TODO put a search for namenode in core-site.xml template
 
 %w{
-  core-site.xml
-  fair-scheduler.xml
-  hadoop-env.sh
   hadoop-metrics.properties
   hdfs-site.xml
   log4j.properties
