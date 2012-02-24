@@ -53,11 +53,27 @@ core_site_vars = { :options => node[:hadoop][:core_site] }
 core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:54310" if namenode
 
 template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/core-site.xml" do
+  source "generic-site.xml.erb"
   mode 0750
   owner "hdfs"
   group "hdfs"
   action :create
   variables core_site_vars
+end
+
+hdfs_site_vars = { :options => node[:hadoop][:core_site] }
+hdfs_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:54310" if namenode
+
+# TODO this template needs the secondary name node searched, key dfs.secondary.http.address
+# hostname:port
+
+template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hdfs-site.xml" do
+  source "generic-site.xml.erb"
+  mode 0750
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables hdfs_site_vars
 end
 
 template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hadoop-env.sh" do
@@ -99,7 +115,6 @@ end
 # TODO put a search for namenode in core-site.xml template
 
 %w{
-  hdfs-site.xml
   mapred-site.xml
 }.each do |file|
   cookbook_file "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/#{file}" do
