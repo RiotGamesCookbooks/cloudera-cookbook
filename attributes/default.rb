@@ -18,55 +18,37 @@
 # limitations under the License.
 #
 
-default[:hadoop][:version]          = "0.20"
+default[:hadoop][:hadoop_env][:hadoop_opts]                   = '-Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false'
+default[:hadoop][:hadoop_env][:hadoop_namenode_opts]          = '-Xmx4000m -Dcom.sun.management.jmxremote.port=8006'
+default[:hadoop][:hadoop_env][:hadoop_secondarynamenode_opts] = '-Dcom.sun.management.jmxremote.port=8007'
+default[:hadoop][:hadoop_env][:hadoop_datanode_opts]          = '-xmx2000m -Dcom.sun.management.jmxremote.port=8008'
+default[:hadoop][:hadoop_env][:hadoop_balancer_opts]          = '-dcom.sun.management.jmxremote.port=8009'
+default[:hadoop][:hadoop_env][:hadoop_jobtracker_opts]        = '-xmx6000m -Dcom.sun.management.jmxremote.port=8010'
+default[:hadoop][:hadoop_env][:hadoop_tasktracker_opts]       = '-xmx3000m -Dcom.sun.management.jmxremote.port=8011'
+
+default[:hadoop][:version]                                                      = "0.20"
 #default[:hadoop][:user]             = "hdfs"
 #default[:hadoop][:group]            = "hdfs"
-#default[:hadoop][:core_site] = Array.new
-default[:hadoop][:core_site] = {
-  'dfs.hosts.exclude' => '/etc/hadoop-0.20/conf.chef/exclude',
-  'fs.inmemory.size.mb' => '200',
-  'io.sort.factory' => '100',
-  'io.sort.mb' => '200',
-  'io.file.buffer.size' => '131072'
-}
 
-default[:hadoop][:hadoop_env] = {
-  'hadoop_opts' => '-Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false',
-  'hadoop_namenode_opts' => '-Xmx4000m -Dcom.sun.management.jmxremote.port=8006',
-  'hadoop_secondarynamenode_opts' => '-Dcom.sun.management.jmxremote.port=8007',
-  'hadoop_datanode_opts' => '-xmx2000m -Dcom.sun.management.jmxremote.port=8008',
-  'hadoop_balancer_opts' => '-dcom.sun.management.jmxremote.port=8009',
-  'hadoop_jobtracker_opts' => '-xmx6000m -Dcom.sun.management.jmxremote.port=8010',
-  'hadoop_tasktracker_opts' => '-xmx3000m -Dcom.sun.management.jmxremote.port=8011'
-}
+default[:hadoop][:core_site][:dfs_hosts_exclude]                                = '/etc/hadoop-0.20/conf.chef/exclude'
+default[:hadoop][:core_site][:fs_inmemory_size_mb]                              = 200
+default[:hadoop][:core_site][:io_sort_factory]                                  = 100
+default[:hadoop][:core_site][:io_sort_mb]                                       = 200
+default[:hadoop][:core_site][:io_file_buffer_size]                              = 131072
 
-default[:hadoop][:config][:fair_scheduler] = {
-  'pools' => {
-    'hdfs' => {
-      'minMaps' => '24',
-      'minReduces' => '12',
-      'maxMaps' => '96',
-      'maxReduces' => '36',
-      'maxRunningJobs' => '60',
-      'minSharePreemptionTimeout' => '300',
-      'weight' => '1.0'
-    }
-  },
-  'users' => {
-    'hdfs' => {
-      'maxRunningJobs' => '10'
-    }
-  },
-  'defaults' => {
-    'poolMaxJobsDefault' => '20',
-    'userMaxJobsDefault' => '60',
-    'defaultMinSharePreemptionTimeout' => '600',
-    'fairSharePreemptionTimeout' => '600'
-  }
-}
-      
+default[:hadoop][:fair_scheduler][:pools][:hdfs][:minMaps]                      = 24
+default[:hadoop][:fair_scheduler][:pools][:hdfs][:minReduces]                   = 12
+default[:hadoop][:fair_scheduler][:pools][:hdfs][:maxMaps]                      = 96
+default[:hadoop][:fair_scheduler][:pools][:hdfs][:maxReduces]                   = 36
+default[:hadoop][:fair_scheduler][:pools][:hdfs][:maxRunningJobs]               = 60
+default[:hadoop][:fair_scheduler][:pools][:hdfs][:minSharePreemptionTimeout]    = 300
+default[:hadoop][:fair_scheduler][:pools][:hdfs][:weight]                       = "1.0"
 
+default[:hadoop][:fair_scheduler][:users][:hdfs][:maxRunningJobs] = 10
 
+default[:hadoop][:fair_scheduler][:defaults][:poolMaxJobsDefault]               = 20
+default[:hadoop][:fair_scheduler][:defaults][:userMaxJobsDefault]               = 20
+default[:hadoop][:fair_scheduler][:defaults][:defaultMinSharePreemptionTimeout] = 600
+default[:hadoop][:fair_scheduler][:defaults][:fairSharePreemptionTimeout]       = 600
 
-
-default[:java][:java_home]					= "/usr"
+default[:java][:java_home]					                                            = "/usr"
