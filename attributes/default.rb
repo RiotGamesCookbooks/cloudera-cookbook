@@ -30,11 +30,11 @@ default[:hadoop][:version]                                                      
 #default[:hadoop][:user]             = "hdfs"
 #default[:hadoop][:group]            = "hdfs"
 
-default[:hadoop][:core_site]['dfs_hosts_exclude']                                = '/etc/hadoop-0.20/conf.chef/exclude'
-default[:hadoop][:core_site]['fs_inmemory_size_mb']                              = 200
-default[:hadoop][:core_site]['io_sort_factory']                                  = 100
-default[:hadoop][:core_site]['io_sort_mb']                                       = 200
-default[:hadoop][:core_site]['io_file_buffer_size']                              = 131072
+default[:hadoop][:core_site]['dfs.hosts.exclude']                                = '/etc/hadoop-0.20/conf.chef/exclude'
+default[:hadoop][:core_site]['fs.inmemory.size.mb']                              = 200
+default[:hadoop][:core_site]['io.sort.factory']                                  = 100
+default[:hadoop][:core_site]['io.sort.mb']                                       = 200
+default[:hadoop][:core_site]['io.file.buffer.size']                              = 131072
 
 default[:hadoop][:fair_scheduler][:pools][:hdfs][:minMaps]                      = 24
 default[:hadoop][:fair_scheduler][:pools][:hdfs][:minReduces]                   = 12
