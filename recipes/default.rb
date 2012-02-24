@@ -76,14 +76,30 @@ template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/fair-scheduler.xml" d
   variables node[:hadoop][:fair_scheduler]
 end
 
+template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/log4j.properties" do
+  source "generic.properties.erb"
+  mode 0750
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables( :properties => node[:hadoop][:log4j] )
+end
+
+template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hadoop-metrics.properties" do
+  source "generic.properties.erb"
+  mode 0750
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables( :properties => node[:hadoop][:hadoop_metrics] )
+end
+
 # TODO  remove this shit and templitize the recipes
 # Copy the riot settings over - we dont want this - move to roles via array of hashes
 # TODO put a search for namenode in core-site.xml template
 
 %w{
-  hadoop-metrics.properties
   hdfs-site.xml
-  log4j.properties
   mapred-site.xml
 }.each do |file|
   cookbook_file "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/#{file}" do

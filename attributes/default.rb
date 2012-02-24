@@ -52,3 +52,26 @@ default[:hadoop][:fair_scheduler][:defaults][:defaultMinSharePreemptionTimeout] 
 default[:hadoop][:fair_scheduler][:defaults][:fairSharePreemptionTimeout]       = 600
 
 default[:java][:java_home]					                                            = "/usr"
+
+default[:hadoop][:log4j]['hadoop.root.logger']                                  = "INFO,console"
+default[:hadoop][:log4j]['hadoop.security.logger']                              = "INFO,console"
+default[:hadoop][:log4j]['hadoop.log.dir']                                      = "."
+default[:hadoop][:log4j]['hadoop.log.file']                                     = "hadoop.log"
+default[:hadoop][:log4j]['hadoop.mapreduce.jobsummary.logger']                  = "${hadoop.root.logger}"
+default[:hadoop][:log4j]['hadoop.mapreduce.jobsummary.log.file']                = "hadoop-mapreduce.jobsummary.log"
+default[:hadoop][:log4j]['log4j.rootLogger']                                    = "${hadoop.root.logger}, EventCounter"
+default[:hadoop][:log4j]['log4j.threshhold']                                    = "ALL"
+
+default[:hadoop][:hadoop_metrics]['dfs.class'] = "org.apache.hadoop.metrics.file.FileContext"
+default[:hadoop][:hadoop_metrics]['dfs.period'] = "10"
+default[:hadoop][:hadoop_metrics]['dfs.fileName'] = "/tmp/dfsmetrics.log"
+default[:hadoop][:hadoop_metrics]['mapred.class'] = "org.apache.hadoop.metrics.file.FileContext"
+default[:hadoop][:hadoop_metrics]['mapred.period'] = "10"
+default[:hadoop][:hadoop_metrics]['mapred.fileName'] = "/tmp/mrmetrics.log"
+default[:hadoop][:hadoop_metrics]['jvm.class'] = "org.apache.hadoop.metrics.file.FileContext"
+default[:hadoop][:hadoop_metrics]['jvm.period'] = "10"
+default[:hadoop][:hadoop_metrics]['jvm.fileName'] = "/tmp/jvmmetrics.log"
+default[:hadoop][:hadoop_metrics]['ugi.class'] = "org.apache.hadoop.metrics.spi.NullContext"
+default[:hadoop][:hadoop_metrics]['fairscheduler.class'] = "org.apache.hadoop.metrics.file.FileContext"
+default[:hadoop][:hadoop_metrics]['fairscheduler.period'] = "10"
+default[:hadoop][:hadoop_metrics]['fairscheduler.fileName'] = "/tmp/fairschedulermetrics.log"
