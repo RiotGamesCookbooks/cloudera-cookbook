@@ -73,7 +73,11 @@ template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/fair-scheduler.xml" d
   owner "hdfs"
   group "hdfs"
   action :create
-  variables( :options => node[:hadoop][:config][:fair_scheduler] )
+  variables( 
+    :pools => node[:hadoop][:config][:fair_scheduler][:pools],
+    :users => node[:hadoop][:config][:fair_scheduler][:users],
+    :defaults => node[:hadoop][:config][:fair_scheduler][:defaults]
+  )
 end
 
 
