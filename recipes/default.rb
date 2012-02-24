@@ -21,9 +21,9 @@
 include_recipe "java"
 include_recipe "cloudera::repo"
 
-package "hadoop-#{node[:hadoop][:version]}"
-
 chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef"
+
+package "hadoop-#{node[:hadoop][:version]}"
 
 directory "/var/lib/hadoop/tmpdir" do
   mode 0755
@@ -77,6 +77,21 @@ template "#{chef_conf_dir}/hdfs-site.xml" do
   variables hdfs_site_vars
 end
 
+# TODO this template needs the job tracker searched for the below key
+#default[:hadoop][:mapred_site]['mapred.job.tracker']                             = 'laxhadoop1-001:54311'
+
+mapred_site_vars = { :options => node[:hadoop][:mapred_site] }
+
+template "#{chef_conf_dir}/mapred-site.xml" do
+  source "generic-site.xml.erb"
+  mode 0750
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables mapred_site_vars
+end
+
+
 template "#{chef_conf_dir}/hadoop-env.sh" do
   mode 0750
   owner "hdfs"
@@ -109,22 +124,6 @@ template "#{chef_conf_dir}/hadoop-metrics.properties" do
   group "hdfs"
   action :create
   variables( :properties => node[:hadoop][:hadoop_metrics] )
-end
-
-# TODO  remove this shit and templitize the recipes
-# Copy the riot settings over - we dont want this - move to roles via array of hashes
-# TODO put a search for namenode in core-site.xml template
-
-%w{
-  mapred-site.xml
-}.each do |file|
-  cookbook_file "#{chef_conf_dir}/#{file}" do
-    source "conf/#{file}"
-    mode 0750
-    owner "hdfs"
-    group "hdfs"
-    action :create
-  end
 end
 
 execute "update hadoop alternatives" do
