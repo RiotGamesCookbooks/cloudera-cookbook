@@ -23,6 +23,8 @@ include_recipe "cloudera::repo"
 
 package "hadoop-#{node[:hadoop][:version]}"
 
+chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef"
+
 directory "/var/lib/hadoop/tmpdir" do
   mode 0755
   owner "hdfs"
@@ -39,7 +41,7 @@ directory "/var/lib/hadoop/mapred" do
   recursive true
 end
 
-directory "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef" do
+directory chef_conf_dir do
   mode 0750
   owner "root"
   group "root"
@@ -52,7 +54,7 @@ namenode = search(:node, "chef_environment:#{node.chef_environment} AND role:had
 core_site_vars = { :options => node[:hadoop][:core_site] }
 core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:54310" if namenode
 
-template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/core-site.xml" do
+template "#{chef_conf_dir}/core-site.xml" do
   source "generic-site.xml.erb"
   mode 0750
   owner "hdfs"
@@ -67,7 +69,7 @@ hdfs_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:54
 # TODO this template needs the secondary name node searched, key dfs.secondary.http.address
 # hostname:port
 
-template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hdfs-site.xml" do
+template "#{chef_conf_dir}/hdfs-site.xml" do
   source "generic-site.xml.erb"
   mode 0750
   owner "hdfs"
@@ -76,7 +78,7 @@ template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hdfs-site.xml" do
   variables hdfs_site_vars
 end
 
-template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hadoop-env.sh" do
+template "#{chef_conf_dir}/hadoop-env.sh" do
   mode 0750
   owner "hdfs"
   group "hdfs"
@@ -84,7 +86,7 @@ template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hadoop-env.sh" do
   variables( :options => node[:hadoop][:hadoop_env] )
 end
 
-template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/fair-scheduler.xml" do
+template "#{chef_conf_dir}/fair-scheduler.xml" do
   mode 0750
   owner "hdfs"
   group "hdfs"
@@ -92,7 +94,7 @@ template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/fair-scheduler.xml" d
   variables node[:hadoop][:fair_scheduler]
 end
 
-template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/log4j.properties" do
+template "#{chef_conf_dir}/log4j.properties" do
   source "generic.properties.erb"
   mode 0750
   owner "hdfs"
@@ -101,7 +103,7 @@ template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/log4j.properties" do
   variables( :properties => node[:hadoop][:log4j] )
 end
 
-template "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/hadoop-metrics.properties" do
+template "#{chef_conf_dir}/hadoop-metrics.properties" do
   source "generic.properties.erb"
   mode 0750
   owner "hdfs"
@@ -117,7 +119,7 @@ end
 %w{
   mapred-site.xml
 }.each do |file|
-  cookbook_file "/etc/hadoop-#{node[:hadoop][:version]}/conf.chef/#{file}" do
+  cookbook_file "#{chef_conf_dir}/#{file}" do
     source "conf/#{file}"
     mode 0750
     owner "hdfs"
