@@ -30,11 +30,11 @@ default[:hadoop][:version]                                                      
 #default[:hadoop][:user]             = "hdfs"
 #default[:hadoop][:group]            = "hdfs"
 
-default[:hadoop][:core_site][:dfs_hosts_exclude]                                = '/etc/hadoop-0.20/conf.chef/exclude'
-default[:hadoop][:core_site][:fs_inmemory_size_mb]                              = 200
-default[:hadoop][:core_site][:io_sort_factory]                                  = 100
-default[:hadoop][:core_site][:io_sort_mb]                                       = 200
-default[:hadoop][:core_site][:io_file_buffer_size]                              = 131072
+default[:hadoop][:core_site]['dfs_hosts_exclude']                                = '/etc/hadoop-0.20/conf.chef/exclude'
+default[:hadoop][:core_site]['fs_inmemory_size_mb']                              = 200
+default[:hadoop][:core_site]['io_sort_factory']                                  = 100
+default[:hadoop][:core_site]['io_sort_mb']                                       = 200
+default[:hadoop][:core_site]['io_file_buffer_size']                              = 131072
 
 default[:hadoop][:fair_scheduler][:pools][:hdfs][:minMaps]                      = 24
 default[:hadoop][:fair_scheduler][:pools][:hdfs][:minReduces]                   = 12
@@ -50,5 +50,11 @@ default[:hadoop][:fair_scheduler][:defaults][:poolMaxJobsDefault]               
 default[:hadoop][:fair_scheduler][:defaults][:userMaxJobsDefault]               = 20
 default[:hadoop][:fair_scheduler][:defaults][:defaultMinSharePreemptionTimeout] = 600
 default[:hadoop][:fair_scheduler][:defaults][:fairSharePreemptionTimeout]       = 600
+
+default[:hadoop][:hdfs_site]['dfs.replication']                                 = 3
+default[:hadoop][:hdfs_site]['dfs.name.dir']                                    = '/var/lib/hadoop/tmpdir/dfs/name'
+default[:hadoop][:hdfs_site]['dfs.data.dir']                                    = '/hdfs1,/hdfs2,/hdfs3,/hdfs4'
+default[:hadoop][:hdfs_site]['topology.script.file.name']                       = '/home/hdfs/rackawareNamenodeConfig/topology.py'
+default[:hadoop][:hdfs_site]['fs.trash.interval']                               = 1440
 
 default[:java][:java_home]					                                            = "/usr"
