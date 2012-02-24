@@ -99,7 +99,6 @@ end
 
 %w{
   hadoop-metrics.properties
-  hdfs-site.xml
   log4j.properties
   mapred-site.xml
 }.each do |file|
