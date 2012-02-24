@@ -63,11 +63,10 @@ template "#{chef_conf_dir}/core-site.xml" do
   variables core_site_vars
 end
 
-hdfs_site_vars = { :options => node[:hadoop][:core_site] }
+hdfs_site_vars = { :options => node[:hadoop][:hdfs_site] }
 hdfs_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:54310" if namenode
 
-# TODO this template needs the secondary name node searched, key dfs.secondary.http.address
-# hostname:port
+# TODO this template needs the secondary name node searched, key dfs.secondary.http.address format : hostname:port
 
 template "#{chef_conf_dir}/hdfs-site.xml" do
   source "generic-site.xml.erb"
