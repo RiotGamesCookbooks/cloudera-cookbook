@@ -27,6 +27,7 @@ default[:hadoop][:hadoop_env][:hadoop_jobtracker_opts]        = '-xmx6000m -Dcom
 default[:hadoop][:hadoop_env][:hadoop_tasktracker_opts]       = '-xmx3000m -Dcom.sun.management.jmxremote.port=8011'
 
 default[:hadoop][:version]                                                      = "0.20"
+default[:hadoop][:namenode_port]                                                = "54310"
 #default[:hadoop][:user]             = "hdfs"
 #default[:hadoop][:group]            = "hdfs"
 
