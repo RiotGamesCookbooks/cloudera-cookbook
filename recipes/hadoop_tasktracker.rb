@@ -31,6 +31,15 @@ directory "/var/lib/hadoop/tmpdir" do
   recursive true
 end
 
+template "/etc/init.d/hadoop-0.20-tasktracker" do
+  mode 0755
+  owner "root"
+  group "root"
+  variables(
+    :java_home => node[:java][:java_home]
+  )
+end
+
 service "hadoop-#{node[:hadoop][:version]}-datanode" do
   action [ :start, :enable ]
 end
