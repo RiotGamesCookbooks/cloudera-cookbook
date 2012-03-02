@@ -21,7 +21,7 @@
 default[:hadoop][:hadoop_env][:hadoop_opts]                   = '-Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false'
 default[:hadoop][:hadoop_env][:hadoop_namenode_opts]          = '-Xmx4000m -Dcom.sun.management.jmxremote.port=8006'
 default[:hadoop][:hadoop_env][:hadoop_secondarynamenode_opts] = '-Dcom.sun.management.jmxremote.port=8007'
-default[:hadoop][:hadoop_env][:hadoop_datanode_opts]          = '-xmx2000m -Dcom.sun.management.jmxremote.port=8008'
+default[:hadoop][:hadoop_env][:hadoop_datanode_opts]          = '-Xmx2000m -Dcom.sun.management.jmxremote.port=8008'
 default[:hadoop][:hadoop_env][:hadoop_balancer_opts]          = '-dcom.sun.management.jmxremote.port=8009'
 default[:hadoop][:hadoop_env][:hadoop_jobtracker_opts]        = '-xmx6000m -Dcom.sun.management.jmxremote.port=8010'
 default[:hadoop][:hadoop_env][:hadoop_tasktracker_opts]       = '-xmx3000m -Dcom.sun.management.jmxremote.port=8011'
@@ -66,6 +66,11 @@ default[:hadoop][:log4j]['hadoop.mapreduce.jobsummary.logger']                  
 default[:hadoop][:log4j]['hadoop.mapreduce.jobsummary.log.file']                = 'hadoop-mapreduce.jobsummary.log'
 default[:hadoop][:log4j]['log4j.rootLogger']                                    = '${hadoop.root.logger}, EventCounter'
 default[:hadoop][:log4j]['log4j.threshhold']                                    = 'ALL'
+default[:hadoop][:log4j]['log4j.appender.console']                              ='org.apache.log4j.ConsoleAppender'
+default[:hadoop][:log4j]['log4j.appender.console.target']                       ='System.err'
+default[:hadoop][:log4j]['log4j.appender.console.layout']                       ='org.apache.log4j.PatternLayout'
+default[:hadoop][:log4j]['log4j.appender.console.layout.ConversionPattern']     ='%d{yy/MM/dd HH:mm:ss} %p %c{2}: %m%n'
+default[:hadoop][:log4j]['log4j.appender.EventCounter']                         ='org.apache.hadoop.metrics.jvm.EventCounter'
 
 default[:hadoop][:hadoop_metrics]['dfs.class']                                  = 'org.apache.hadoop.metrics.file.FileContext'
 default[:hadoop][:hadoop_metrics]['dfs.period']                                 = 10
