@@ -42,7 +42,7 @@ directory "/var/lib/hadoop/mapred" do
 end
 
 directory chef_conf_dir do
-  mode 0750
+  mode 0755
   owner "root"
   group "root"
   action :create
