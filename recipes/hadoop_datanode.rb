@@ -23,7 +23,6 @@ include_recipe "cloudera"
 package "hadoop-#{node[:hadoop][:version]}-datanode"
 
 template "/etc/init.d/hadoop-0.20-datanode" do
-  source "hadoop_0.20_datanode.erb"
   mode 0755
   owner "root"
   group "root"

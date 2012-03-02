@@ -22,9 +22,11 @@
 source /etc/rc.d/init.d/functions
 source /etc/default/hadoop-0.20
 
+JAVA_HOME="<%= @java_home  %>"
+export JAVA_HOME
+
 source /usr/lib/hadoop-0.20/bin/hadoop-config.sh
 
-JAVA_HOME="<%= @java_home  %>"
 
 RETVAL_SUCCESS=0
 
