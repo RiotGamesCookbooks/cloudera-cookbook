@@ -56,14 +56,13 @@ end
 execute "make mapreduce dir file system" do
   command "hadoop fs -mkdir /mapred"
   creates "/mapred"
-  user "hdfs"
   environment ({'JAVA_HOME' => '/usr'}) # TODO this should not be hard coded
   action :run
+  not_if "test -d /mapred"
 end
 
 execute "chown /mapred dir" do
-  command "haddop fs -chown mapred /mapred"
-  user "hdfs"
+  command "hadoop fs -chown mapred /mapred"
   environment ({'JAVA_HOME' => '/usr'}) # TODO this should not be hard coded
   action :run
 end
