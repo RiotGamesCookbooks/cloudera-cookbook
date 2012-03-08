@@ -22,7 +22,8 @@ include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-tasktracker"
 
-# Create some data dirs. We might not need this
+# Create some data dirs.
+# TODO  We might not need these dirs
 directory "/var/lib/hadoop/tmpdir" do
   mode 0755
   owner "hdfs"
@@ -31,7 +32,7 @@ directory "/var/lib/hadoop/tmpdir" do
   recursive true
 end
 
-template "/etc/init.d/hadoop-0.20-tasktracker" do
+template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-tasktracker" do
   mode 0755
   owner "root"
   group "root"
@@ -40,6 +41,6 @@ template "/etc/init.d/hadoop-0.20-tasktracker" do
   )
 end
 
-service "hadoop-#{node[:hadoop][:version]}-datanode" do
+service "hadoop-#{node[:hadoop][:version]}-tasktracker" do
   action [ :start, :enable ]
 end

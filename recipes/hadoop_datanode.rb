@@ -31,6 +31,15 @@ template "/etc/init.d/hadoop-0.20-datanode" do
   )
 end
 
+node[:hadoop][:hdfs_site]['dfs.data.dir'].split(',').each do |dir|
+  directory dir do
+    mode 0755
+    owner "hdfs"
+    group "hdfs"
+    action :create
+  end
+end
+
 service "hadoop-#{node[:hadoop][:version]}-datanode" do
   action [ :start, :enable ]
 end

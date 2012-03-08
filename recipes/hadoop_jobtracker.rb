@@ -20,11 +20,9 @@
 
 include_recipe "cloudera"
 
-package "hadoop-#{node[:hadoop][:version]}-jobtracker" do
-  action :install
-end
+package "hadoop-#{node[:hadoop][:version]}-jobtracker"
 
-template "/etc/init.d/hadoop-0.20-jobtracker" do
+template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-jobtracker" do
   mode 0755
   owner "root"
   group "root"
