@@ -17,46 +17,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-default[:hadoop][:hadoop_env][:hadoop_opts]                   = '-Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false'
-default[:hadoop][:hadoop_env][:hadoop_namenode_opts]          = '-Xmx4000m -Dcom.sun.management.jmxremote.port=8006'
-default[:hadoop][:hadoop_env][:hadoop_secondarynamenode_opts] = '-Dcom.sun.management.jmxremote.port=8007'
-default[:hadoop][:hadoop_env][:hadoop_datanode_opts]          = '-Xmx2000m -Dcom.sun.management.jmxremote.port=8008'
-default[:hadoop][:hadoop_env][:hadoop_balancer_opts]          = '-dcom.sun.management.jmxremote.port=8009'
-default[:hadoop][:hadoop_env][:hadoop_jobtracker_opts]        = '-xmx6000m -Dcom.sun.management.jmxremote.port=8010'
-default[:hadoop][:hadoop_env][:hadoop_tasktracker_opts]       = '-xmx3000m -Dcom.sun.management.jmxremote.port=8011'
-
 default[:hadoop][:version]                                                      = "0.20"
+default[:hadoop][:conf_dir]                                                     = "conf.chef"
 default[:hadoop][:namenode_port]                                                = "54310"
-#default[:hadoop][:user]             = "hdfs"
-#default[:hadoop][:group]            = "hdfs"
+default[:hadoop][:jobtracker_port]                                              = "54311"
 
-default[:hadoop][:core_site]['dfs.hosts.exclude']                               = '/etc/hadoop-0.20/conf.chef/exclude'
-default[:hadoop][:core_site]['fs.inmemory.size.mb']                             = 200
-default[:hadoop][:core_site]['io.sort.factory']                                 = 100
-default[:hadoop][:core_site]['io.sort.mb']                                      = 200
-default[:hadoop][:core_site]['io.file.buffer.size']                             = 131072
+default[:hadoop][:mapred_site]['mapred.fairscheduler.allocation.file'] = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}/fair-scheduler.xml"
 
-default[:hadoop][:fair_scheduler][:pools][:hdfs][:minMaps]                      = 24
-default[:hadoop][:fair_scheduler][:pools][:hdfs][:minReduces]                   = 12
-default[:hadoop][:fair_scheduler][:pools][:hdfs][:maxMaps]                      = 96
-default[:hadoop][:fair_scheduler][:pools][:hdfs][:maxReduces]                   = 36
-default[:hadoop][:fair_scheduler][:pools][:hdfs][:maxRunningJobs]               = 60
-default[:hadoop][:fair_scheduler][:pools][:hdfs][:minSharePreemptionTimeout]    = 300
-default[:hadoop][:fair_scheduler][:pools][:hdfs][:weight]                       = '1.0'
-
-default[:hadoop][:fair_scheduler][:users][:hdfs][:maxRunningJobs] = 10
-
-default[:hadoop][:fair_scheduler][:defaults][:poolMaxJobsDefault]               = 20
-default[:hadoop][:fair_scheduler][:defaults][:userMaxJobsDefault]               = 20
-default[:hadoop][:fair_scheduler][:defaults][:defaultMinSharePreemptionTimeout] = 600
-default[:hadoop][:fair_scheduler][:defaults][:fairSharePreemptionTimeout]       = 600
-
-default[:hadoop][:hdfs_site]['dfs.replication']                                 = 3
-default[:hadoop][:hdfs_site]['dfs.name.dir']                                    = '/var/lib/hadoop/tmpdir/dfs/name'
-default[:hadoop][:hdfs_site]['dfs.data.dir']                                    = '/hdfs1,/hdfs2,/hdfs3,/hdfs4'
-default[:hadoop][:hdfs_site]['topology.script.file.name']                       = '/home/hdfs/rackawareNamenodeConfig/topology.py'
-default[:hadoop][:hdfs_site]['fs.trash.interval']                               = 1440
+default[:java][:java_home]					                                            = "/usr"
 
 default[:hadoop][:log4j]['hadoop.root.logger']                                                 = 'INFO,console'
 default[:hadoop][:log4j]['hadoop.security.logger']                                             = 'INFO,console'
@@ -104,40 +72,5 @@ default[:hadoop][:log4j]['log4j.appender.JSA.DatePattern']                      
 default[:hadoop][:log4j]['log4j.logger.org.apache.hadoop.mapred.JobInProgress$JobSummary']     = '${hadoop.mapreduce.jobsummary.logger}'
 default[:hadoop][:log4j]['log4j.additivity.org.apache.hadoop.mapred.JobInProgress$JobSummary'] = 'false'
 
+# leave this one in attributes
 
-default[:hadoop][:hadoop_metrics]['dfs.class']                                  = 'org.apache.hadoop.metrics.file.FileContext'
-default[:hadoop][:hadoop_metrics]['dfs.period']                                 = 10
-default[:hadoop][:hadoop_metrics]['dfs.fileName']                               = '/tmp/dfsmetrics.log'
-default[:hadoop][:hadoop_metrics]['mapred.class']                               = 'org.apache.hadoop.metrics.file.FileContext'
-default[:hadoop][:hadoop_metrics]['mapred.period']                              = 10
-default[:hadoop][:hadoop_metrics]['mapred.fileName']                            = '/tmp/mrmetrics.log'
-default[:hadoop][:hadoop_metrics]['jvm.class']                                  = 'org.apache.hadoop.metrics.file.FileContext'
-default[:hadoop][:hadoop_metrics]['jvm.period']                                 = 10
-default[:hadoop][:hadoop_metrics]['jvm.fileName']                               = '/tmp/jvmmetrics.log'
-default[:hadoop][:hadoop_metrics]['ugi.class']                                  = 'org.apache.hadoop.metrics.spi.NullContext'
-default[:hadoop][:hadoop_metrics]['fairscheduler.class']                        = 'org.apache.hadoop.metrics.file.FileContext'
-default[:hadoop][:hadoop_metrics]['fairscheduler.period']                       = 10
-default[:hadoop][:hadoop_metrics]['fairscheduler.fileName']                     = '/tmp/fairschedulermetrics.log'
-
-default[:hadoop][:mapred_site]['hadoop.tmp.dir']                                 = '/var/lib/hadoop/tmpdir'
-default[:hadoop][:mapred_site]['mapred.local.dir']                               = '/var/lib/hadoop/mapred'
-default[:hadoop][:mapred_site]['mapred.map.tasks']                               = 2
-default[:hadoop][:mapred_site]['mapred.reduce.tasks']                            = 1
-default[:hadoop][:mapred_site]['mapred.tasktracker.map.tasks.maximum']           = 8
-default[:hadoop][:mapred_site]['mapred.tasktracker.reduce.tasks.maximum']        = 4
-default[:hadoop][:mapred_site]['mapred.system.dir']                              = '/mapred/system'
-default[:hadoop][:mapred_site]['mapred.jobtracker.taskScheduler']                = 'org.apache.hadoop.mapred.FairScheduler'
-default[:hadoop][:mapred_site]['mapred.fairscheduler.assignmultiple']            = 'true'
-default[:hadoop][:mapred_site]['mapred.fairscheduler.sizebasedweight']           = 'true'
-default[:hadoop][:mapred_site]['mapred.fairscheduler.locality.delay']            = 0
-default[:hadoop][:mapred_site]['mapred.fairscheduler.allocation.file']           = '/etc/hadoop-0.20/conf.riot/fair-scheduler.xml'
-default[:hadoop][:mapred_site]['mapred.child.java.opts']                         = '-Xmx1024M'
-default[:hadoop][:mapred_site]['mapred.map.child.java.opts']                     = '-Xmx1024M'
-default[:hadoop][:mapred_site]['mapred.reduce.child.java.opts']                  = '-Xmx1024M'
-default[:hadoop][:mapred_site]['mapred.job.tracker.handler.count']               = 80
-default[:hadoop][:mapred_site]['mapred.reduce.parallel.copies']                  = 150
-default[:hadoop][:mapred_site]['tasktracker.http.threads']                       = 50
-default[:hadoop][:mapred_site]['mapred.jobtracker.taskScheduler.maxRunningTasksPerJob'] = 24
-
-
-default[:java][:java_home]					                                            = "/usr"
