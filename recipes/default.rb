@@ -131,18 +131,6 @@ template "#{chef_conf_dir}/hadoop-metrics.properties" do
   variables( :properties => node[:hadoop][:hadoop_metrics] )
 end
 
-# create the topology.script.file.name dir
-toplogy_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
-# TODO create the topoloy template
-
-directory toplogy_dir do
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
-end
-
 # Create the master and slave files
 namenode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_namenode_server OR role:hadoop_secondary_namenode_server")
 masters = namenode_servers.map { |node| node[:ipaddress] }

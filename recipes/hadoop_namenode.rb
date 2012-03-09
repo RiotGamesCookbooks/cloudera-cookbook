@@ -56,6 +56,37 @@ directory node[:hadoop][:hdfs_site]['dfs.name.dir'] do
   #notify the hadoop namenode format execute
 end
 
+# TODO generate the toplogy script
+# Generate the topology.rb script for rackawareness
+#datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_datanode_server")
+#topology_nodes = datanode_servers.map do |topology_node|
+#  {
+#    :datacenter => topology_node[:hadoop][:rackaware][:datacenter],
+#    :rack => topology_node[:hadoop][:rackaware][:rack],
+#    :ipaddress => topology_node[:hadoop][:rackaware][:ipaddress]
+#  }
+#end
+
+# create the topology.script.file.name dir
+topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
+
+directory topology_dir do
+  mode 0755
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  recursive true
+end
+
+#template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
+#  source topology.rb.erb
+#   mode 0755
+#   owner "hdfs"
+#   group "hdfs"
+#   action :create
+#   variables( :topology_nodes => topology_nodes )
+#end
+
 service "hadoop-#{node[:hadoop][:version]}-namenode" do
   action [ :start, :enable ]
 end
@@ -63,7 +94,7 @@ end
 execute "make mapreduce dir file system" do
   command "hadoop fs -mkdir /mapred"
   user "hdfs"
-  environment ({'JAVA_HOME' => node[:java][:java_home]}) # TODO this should not be hard coded
+  environment ({'JAVA_HOME' => node[:java][:java_home]})
   action :run
   not_if "hadoop fs -test -d /mapred"
 end
@@ -71,6 +102,6 @@ end
 execute "chown /mapred dir" do
   command "hadoop fs -chown mapred /mapred"
   user "hdfs"
-  environment ({'JAVA_HOME' => node[:java][:java_home]}) # TODO this should not be hard coded
+  environment ({'JAVA_HOME' => node[:java][:java_home]})
   action :run
 end

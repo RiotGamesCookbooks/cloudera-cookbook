@@ -17,10 +17,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-default[:hadoop][:version]                                                      = "0.20"
-default[:hadoop][:conf_dir]                                                     = "conf.chef"
-default[:hadoop][:namenode_port]                                                = "54310"
-default[:hadoop][:jobtracker_port]                                              = "54311"
+default[:hadoop][:version]                = "0.20"
+default[:hadoop][:conf_dir]               = "conf.chef"
+default[:hadoop][:namenode_port]          = "54310"
+default[:hadoop][:jobtracker_port]        = "54311"
+default[:hadoop][:rackaware][:datacenter] = nil
+default[:hadoop][:rackaware][:rack]       = nil
 
 default[:hadoop][:mapred_site]['mapred.fairscheduler.allocation.file'] = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}/fair-scheduler.xml"
 
