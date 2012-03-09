@@ -143,6 +143,31 @@ directory toplogy_dir do
   recursive true
 end
 
+# Create the master and slave files
+namenode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_namenode_server OR role:hadoop_secondary_namenode_server")
+masters = namenode_servers.map { |node| node[:ipaddress] }
+
+template "#{chef_conf_dir}/masters" do
+  source "master_slave.erb"
+  mode 0755
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables( :nodes => masters )
+end
+
+datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_datanode_server")
+slaves = datanode_servers.map { |node| node[:ipaddress] }
+
+template "#{chef_conf_dir}/slaves" do
+  source "master_slave.erb"
+  mode 0755
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables( :nodes => slaves )
+end
+
 execute "update hadoop alternatives" do
   command "alternatives --install /etc/hadoop-#{node[:hadoop][:version]}/conf hadoop-#{node[:hadoop][:version]}-conf /etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]} 50"
 end
