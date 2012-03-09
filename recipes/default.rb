@@ -59,7 +59,7 @@ core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{
 
 template "#{chef_conf_dir}/core-site.xml" do
   source "generic-site.xml.erb"
-  mode 0755
+  mode 0644
   owner "hdfs"
   group "hdfs"
   action :create
@@ -75,7 +75,7 @@ hdfs_site_vars[:options]['dfs.secondary.http.address'] = "#{secondary_namenode[:
 
 template "#{chef_conf_dir}/hdfs-site.xml" do
   source "generic-site.xml.erb"
-  mode 0755
+  mode 0644
   owner "hdfs"
   group "hdfs"
   action :create
@@ -89,7 +89,7 @@ mapred_site_vars[:options]['mapred.job.tracker'] = "#{jobtracker[:ipaddress]}:#{
 
 template "#{chef_conf_dir}/mapred-site.xml" do
   source "generic-site.xml.erb"
-  mode 0755
+  mode 0644
   owner "hdfs"
   group "hdfs"
   action :create
@@ -106,7 +106,7 @@ template "#{chef_conf_dir}/hadoop-env.sh" do
 end
 
 template node[:hadoop][:mapred_site]['mapred.fairscheduler.allocation.file'] do
-  mode 0755
+  mode 0644
   owner "hdfs"
   group "hdfs"
   action :create
@@ -115,7 +115,7 @@ end
 
 template "#{chef_conf_dir}/log4j.properties" do
   source "generic.properties.erb"
-  mode 0755
+  mode 0644
   owner "hdfs"
   group "hdfs"
   action :create
@@ -124,7 +124,7 @@ end
 
 template "#{chef_conf_dir}/hadoop-metrics.properties" do
   source "generic.properties.erb"
-  mode 0755
+  mode 0644
   owner "hdfs"
   group "hdfs"
   action :create
@@ -149,7 +149,7 @@ masters = namenode_servers.map { |node| node[:ipaddress] }
 
 template "#{chef_conf_dir}/masters" do
   source "master_slave.erb"
-  mode 0755
+  mode 0644
   owner "hdfs"
   group "hdfs"
   action :create
@@ -161,7 +161,7 @@ slaves = datanode_servers.map { |node| node[:ipaddress] }
 
 template "#{chef_conf_dir}/slaves" do
   source "master_slave.erb"
-  mode 0755
+  mode 0644
   owner "hdfs"
   group "hdfs"
   action :create
