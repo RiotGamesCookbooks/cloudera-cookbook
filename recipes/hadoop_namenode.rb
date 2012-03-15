@@ -45,7 +45,7 @@ end
 # Turns out this dfs.name.dir can have many dirs split on , - figure this out
 # This should also notify an execute for 'hadooop namenode -format' 
 # currently Im not sure how to force Y into the above command as it requires interaction.
-# Also you cna only format namenode once unless you want to whipe  your metadata 
+# Also you can only format namenode once unless you want to whipe  your metadata 
 # so this directory needs a check to make sure its just not creating it again and again and triggering the notify
 directory node[:hadoop][:hdfs_site]['dfs.name.dir'] do
   mode 0755
@@ -86,6 +86,15 @@ end
 #   action :create
 #   variables( :topology_nodes => topology_nodes )
 #end
+
+# TODO remove this and replace it with generated template for topology
+# This is a temporary non rackaware topology file, it will just return default
+cookbook_file node[:hadoop][:hdfs_site]['topology.script.file.name'] do
+  mode 0755
+  owner "hdfs"
+  group "hdfs"
+  action :create
+end
 
 service "hadoop-#{node[:hadoop][:version]}-namenode" do
   action [ :start, :enable ]
