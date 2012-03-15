@@ -10,3 +10,4 @@ version          "0.0.1"
 end
 
 depends 'java', '>= 1.4.0'
+depends 'yum'
