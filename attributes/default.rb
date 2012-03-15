@@ -27,8 +27,8 @@ default[:hadoop][:namenode_port]          = "54310"
 default[:hadoop][:jobtracker_port]        = "54311"
 
 # Provide rack info
-default[:hadoop][:rackaware][:datacenter] = nil
-default[:hadoop][:rackaware][:rack]       = nil
+default[:hadoop][:rackaware][:datacenter] = "default"
+default[:hadoop][:rackaware][:rack]       = "rack0"
 
 # Use an alternate yum repo and key
 default[:hadoop][:yum_repo_url]           = nil
@@ -36,7 +36,7 @@ default[:hadoop][:yum_repo_key_url]       = nil
 
 default[:hadoop][:mapred_site]['mapred.fairscheduler.allocation.file'] = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}/fair-scheduler.xml"
 
-default[:java][:java_home]					                                            = "/usr"
+default[:java][:java_home] = "/usr"
 
 default[:hadoop][:log4j]['hadoop.root.logger']                                                 = 'INFO,console'
 default[:hadoop][:log4j]['hadoop.security.logger']                                             = 'INFO,console'

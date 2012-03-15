@@ -58,14 +58,16 @@ end
 
 # TODO generate the toplogy script
 # Generate the topology.rb script for rackawareness
-#datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_datanode_server")
-#topology_nodes = datanode_servers.map do |topology_node|
-#  {
-#    :datacenter => topology_node[:hadoop][:rackaware][:datacenter],
-#    :rack => topology_node[:hadoop][:rackaware][:rack],
-#    :ipaddress => topology_node[:hadoop][:rackaware][:ipaddress]
-#  }
-#end
+log(datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_datanode_server")) { level :warn }
+datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_datanode_server")
+topology_nodes = datanode_servers.map do |topology_node|
+  {
+    :datacenter => topology_node[:hadoop][:rackaware][:datacenter],
+    :rack => topology_node[:hadoop][:rackaware][:rack],
+    :ipaddress => topology_node[:ipaddress]
+  }
+end
+log(topology_nodes) { level :warn }
 
 # create the topology.script.file.name dir
 topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
@@ -78,23 +80,23 @@ directory topology_dir do
   recursive true
 end
 
-#template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
-#  source topology.rb.erb
-#   mode 0755
-#   owner "hdfs"
-#   group "hdfs"
-#   action :create
-#   variables( :topology_nodes => topology_nodes )
-#end
-
-# TODO remove this and replace it with generated template for topology
-# This is a temporary non rackaware topology file, it will just return default
-cookbook_file node[:hadoop][:hdfs_site]['topology.script.file.name'] do
+template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
+  source "topology.rb.erb"
   mode 0755
   owner "hdfs"
   group "hdfs"
   action :create
+  variables( :topology_nodes => topology_nodes )
 end
+
+# TODO remove this and replace it with generated template for topology
+# This is a temporary non rackaware topology file, it will just return default
+#cookbook_file node[:hadoop][:hdfs_site]['topology.script.file.name'] do
+#  mode 0755
+#  owner "hdfs"
+#  group "hdfs"
+#  action :create
+#end
 
 service "hadoop-#{node[:hadoop][:version]}-namenode" do
   action [ :start, :enable ]

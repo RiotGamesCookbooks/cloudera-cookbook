@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+rack_map = {
+  <% @topology_nodes.each_with_index do |topology_node, idx| %>
+    '<%= topology_node[:ipaddress] %>' => '<%= "#{topology_node[:datacenter]}/#{topology_node[:rack]}" %>'<%= ',' unless idx == (@topology_nodes.size - 1) %>
+  <% end %>
+}
+
+if ARGV[0]
+  puts rack_map[ARGV[0]]
+end
