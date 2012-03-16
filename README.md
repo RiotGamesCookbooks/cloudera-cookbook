@@ -1,6 +1,6 @@
 # Cloudera cookbook
 
-Installs and configures [Cloudera](http://www.cloudera.com/)
+Installs and configures [Cloudera's](http://www.cloudera.com/) Hadoop + Hive
 
 
 # Status
