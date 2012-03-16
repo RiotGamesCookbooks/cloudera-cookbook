@@ -30,7 +30,7 @@ Still under active development and testing. YMMV
 * `node[:hadoop][:rackaware][:rack]` - What rack is this hadoop node in. Default `rack0`
 
 ## Alternate install location attributes
-* `node[:hadoop][:yum_repo_url]` - Provide an alternate yum install localtion. If you change this attribute `node[:hadoop][:release]` will not be used to derive the yum_repo_url. Default `nil`
+* `node[:hadoop][:yum_repo_url]` - Provide an alternate yum install localtion. If you change this attribute `node[:hadoop][:release]` will not be used to derive the yum_repo_url and you are expected to provide a path to a working repo for the `node[:hadoop][:version]` used. Default `nil`
 * ~~`node[:hadoop][:yum_repo_key_url]` - Provide an alternate yum repo key location. Default `nil`~~ Currently not implamented!
 
 # License and Author
