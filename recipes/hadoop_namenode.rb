@@ -56,6 +56,12 @@ directory node[:hadoop][:hdfs_site]['dfs.name.dir'] do
   #notify the hadoop namenode format execute
 end
 
+#execute "format namenode" do
+#  command "yes Y | hadoop namenode -format"
+#  user "hdfs"
+#  action :nothing
+#end
+
 # Generate the topology.rb script for rackawareness
 datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_datanode_server")
 topology_nodes = datanode_servers.map do |topology_node|
