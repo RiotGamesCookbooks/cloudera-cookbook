@@ -56,9 +56,7 @@ directory node[:hadoop][:hdfs_site]['dfs.name.dir'] do
   #notify the hadoop namenode format execute
 end
 
-# TODO generate the toplogy script
 # Generate the topology.rb script for rackawareness
-log(datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_datanode_server")) { level :warn }
 datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND role:hadoop_datanode_server")
 topology_nodes = datanode_servers.map do |topology_node|
   {
@@ -67,9 +65,7 @@ topology_nodes = datanode_servers.map do |topology_node|
     :ipaddress => topology_node[:ipaddress]
   }
 end
-log(topology_nodes) { level :warn }
 
-# create the topology.script.file.name dir
 topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
 
 directory topology_dir do
@@ -88,15 +84,6 @@ template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
   action :create
   variables( :topology_nodes => topology_nodes )
 end
-
-# TODO remove this and replace it with generated template for topology
-# This is a temporary non rackaware topology file, it will just return default
-#cookbook_file node[:hadoop][:hdfs_site]['topology.script.file.name'] do
-#  mode 0755
-#  owner "hdfs"
-#  group "hdfs"
-#  action :create
-#end
 
 service "hadoop-#{node[:hadoop][:version]}-namenode" do
   action [ :start, :enable ]
