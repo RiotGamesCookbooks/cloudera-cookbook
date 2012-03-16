@@ -29,8 +29,9 @@ Still under active development and testing. YMMV
 * `node[:hadoop][:rackaware][:datacenter]` - What datacenter is this hadoop node in. Default `default`
 * `node[:hadoop][:rackaware][:rack]` - What rack is this hadoop node in. Default `rack0`
 
-## Alternat install location attributes
-* `node[:hadoop][:yum_repo_url]
+## Alternate install location attributes
+* `node[:hadoop][:yum_repo_url]` - Provide an alternate yum install localtion. If you change this attribute `node[:hadoop][:release]` will not be used to derive the yum_repo_url. Default `nil`
+* ~~`node[:hadoop][:yum_repo_key_url]` - Provide an alternate yum repo key location. Default `nil`~~ Currently not implamented!
 
 # License and Author
 
