@@ -38,7 +38,13 @@ node[:hadoop][:hdfs_site]['dfs.data.dir'].split(',').each do |dir|
     group "hdfs"
     action :create
   end
+
+  directory "#{dir}/lost+found" do
+    owner "hdfs"
+    group "hdfs"
+  end
 end
+
 
 service "hadoop-#{node[:hadoop][:version]}-datanode" do
   action [ :start, :enable ]
