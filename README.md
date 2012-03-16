@@ -21,8 +21,8 @@ Still under active development and testing. YMMV
 ## Configuration attributes
 
 * `node[:hadoop][:conf_dir]` - The hadoop config dir used inside /etc/hadoop and referenced via the alternatives system. Default `conf.chef`
-* `node[:hadoop][:namenode_port] - Port that namenode service will connect to. Default `54310`
-* `node[:hadoop][:jobtracker_port] - Port that jobtracker service will connect to. Default `54311`
+* `node[:hadoop][:namenode_port]` - Port that namenode service will connect to. Default `54310`
+* `node[:hadoop][:jobtracker_port]` - Port that jobtracker service will connect to. Default `54311`
 
 ##Rack-aware attributes
 
