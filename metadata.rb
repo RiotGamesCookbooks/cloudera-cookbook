@@ -1,3 +1,4 @@
+name             "cloudera"
 maintainer       "Riot Games"
 maintainer_email "cerson@me.com"
 license          "Apache 2.0"
