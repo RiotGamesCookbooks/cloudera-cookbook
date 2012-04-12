@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe "cloudera::repo"
+
 package "hadoop-hive-metastore"
 
 template "/etc/init.d/hadoop-hive-metastore" do

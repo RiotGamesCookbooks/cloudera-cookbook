@@ -18,4 +18,7 @@
 # limitations under the License.
 #
 
+include_recipe "cloudera::repo"
+
 package "hadoop-hive"
+

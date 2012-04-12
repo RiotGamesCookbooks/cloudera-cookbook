@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe "cloudera::repo"
+
 package "hadoop-hive-server"
 
 template "/etc/init.d/hadoop-hive-server" do
