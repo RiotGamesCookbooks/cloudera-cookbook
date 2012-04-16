@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+default[:java][:install_flavor]           = "oracle"
 default[:hadoop][:version]                = "0.20"
 default[:hadoop][:release]                = "3u3"
 
