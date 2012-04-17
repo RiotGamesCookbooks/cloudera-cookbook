@@ -52,7 +52,7 @@ directory chef_conf_dir do
   recursive true
 end
 
-namenode = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\:\:hadoop_namenode").first
+namenode = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\\:\\:hadoop_namenode").first
 
 core_site_vars = { :options => node[:hadoop][:core_site] }
 core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}" if namenode
@@ -66,7 +66,7 @@ template "#{chef_conf_dir}/core-site.xml" do
   variables core_site_vars
 end
 
-secondary_namenode = search(:node, "chef_environment:#{node.chef_environment} and recipes:cloudera\:\:hadoop_secondary_namenode_server").first
+secondary_namenode = search(:node, "chef_environment:#{node.chef_environment} and recipes:cloudera\\:\\:hadoop_secondary_namenode_server").first
 
 hdfs_site_vars = { :options => node[:hadoop][:hdfs_site] }
 hdfs_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}" if namenode
@@ -82,7 +82,7 @@ template "#{chef_conf_dir}/hdfs-site.xml" do
   variables hdfs_site_vars
 end
 
-jobtracker = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\:\:hadoop_jobtracker").first
+jobtracker = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\\:\\:hadoop_jobtracker").first
 
 mapred_site_vars = { :options => node[:hadoop][:mapred_site] }
 mapred_site_vars[:options]['mapred.job.tracker'] = "#{jobtracker[:ipaddress]}:#{node[:hadoop][:jobtracker_port]}" if jobtracker
@@ -132,7 +132,7 @@ template "#{chef_conf_dir}/hadoop-metrics.properties" do
 end
 
 # Create the master and slave files
-namenode_servers = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\:\:hadoop_namenode OR recipes:cloudera\:\:hadoop_secondary_namenode")
+namenode_servers = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\\:\\:hadoop_namenode OR recipes:cloudera\\:\\:hadoop_secondary_namenode")
 masters = namenode_servers.map { |node| node[:ipaddress] }
 
 template "#{chef_conf_dir}/masters" do
@@ -144,7 +144,7 @@ template "#{chef_conf_dir}/masters" do
   variables( :nodes => masters )
 end
 
-datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\:\:hadoop_datanode")
+datanode_servers = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\\:\\:hadoop_datanode")
 slaves = datanode_servers.map { |node| node[:ipaddress] }
 
 template "#{chef_conf_dir}/slaves" do
