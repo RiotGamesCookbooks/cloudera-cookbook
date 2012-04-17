@@ -52,10 +52,15 @@ directory chef_conf_dir do
   recursive true
 end
 
-namenode = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\\:\\:hadoop_namenode").first
+namenode = find_cloudera_namenode(node.chef_environment)
+
+unless namenode
+  Chef::Log.fatal "[Cloudera] Unable to find the cloudera namenode!"
+  raise
+end
 
 core_site_vars = { :options => node[:hadoop][:core_site] }
-core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}" if namenode
+core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}"
 
 template "#{chef_conf_dir}/core-site.xml" do
   source "generic-site.xml.erb"
@@ -69,7 +74,7 @@ end
 secondary_namenode = search(:node, "chef_environment:#{node.chef_environment} and recipes:cloudera\\:\\:hadoop_secondary_namenode_server").first
 
 hdfs_site_vars = { :options => node[:hadoop][:hdfs_site] }
-hdfs_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}" if namenode
+hdfs_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}"
 # TODO dfs.secondary.http.address should have port made into an attribute - maybe
 hdfs_site_vars[:options]['dfs.secondary.http.address'] = "#{secondary_namenode[:ipaddress]}:50090" if secondary_namenode
 
