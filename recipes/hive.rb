@@ -21,5 +21,16 @@
 include_recipe "java"
 include_recipe "cloudera::repo"
 
+package "mysql-connector-java"
 package "hadoop-hive"
 
+hive_site_vars = { :options => node[:hive][:hive_site_options] }
+
+template "/etc/hive/conf/hive-site.xml" do
+  source "generic-site.xml.erb"
+  mode 0644
+  owner "root"
+  group "root"
+  action :create
+  variables hive_site_vars
+end

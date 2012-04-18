@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 default[:java][:install_flavor]           = "oracle"
+default[:java][:java_home]                = "/usr"
+
 default[:hadoop][:version]                = "0.20"
 default[:hadoop][:release]                = "3u3"
 
@@ -35,8 +37,6 @@ default[:hadoop][:yum_repo_url]           = nil
 default[:hadoop][:yum_repo_key_url]       = nil
 
 default[:hadoop][:mapred_site]['mapred.fairscheduler.allocation.file'] = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}/fair-scheduler.xml"
-
-default[:java][:java_home] = "/usr"
 
 default[:hadoop][:log4j]['hadoop.root.logger']                                                 = 'INFO,console'
 default[:hadoop][:log4j]['hadoop.security.logger']                                             = 'INFO,console'
@@ -83,3 +83,4 @@ default[:hadoop][:log4j]['log4j.appender.JSA.layout.ConversionPattern']         
 default[:hadoop][:log4j]['log4j.appender.JSA.DatePattern']                                     = '.yyyy-MM-dd'
 default[:hadoop][:log4j]['log4j.logger.org.apache.hadoop.mapred.JobInProgress$JobSummary']     = '${hadoop.mapreduce.jobsummary.logger}'
 default[:hadoop][:log4j]['log4j.additivity.org.apache.hadoop.mapred.JobInProgress$JobSummary'] = 'false'
+
