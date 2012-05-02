@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "java"
+#include_recipe "java"
 include_recipe "cloudera::repo"
 
 chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}"
@@ -52,15 +52,18 @@ directory chef_conf_dir do
   recursive true
 end
 
-namenode = find_cloudera_namenode(node.chef_environment)
+#namenode search is broken
+#namenode = find_cloudera_namenode(node.chef_environment)
+#
 
-unless namenode
-  Chef::Log.fatal "[Cloudera] Unable to find the cloudera namenode!"
-  raise
-end
+#unless namenode
+#  Chef::Log.fatal "[Cloudera] Unable to find the cloudera namenode!"
+#  raise
+#end
 
 core_site_vars = { :options => node[:hadoop][:core_site] }
-core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}"
+
+#core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}"
 
 template "#{chef_conf_dir}/core-site.xml" do
   source "generic-site.xml.erb"
@@ -71,12 +74,12 @@ template "#{chef_conf_dir}/core-site.xml" do
   variables core_site_vars
 end
 
-secondary_namenode = search(:node, "chef_environment:#{node.chef_environment} and recipes:cloudera\\:\\:hadoop_secondary_namenode_server").first
+#secondary_namenode = search(:node, "chef_environment:#{node.chef_environment} and recipes:cloudera\\:\\:hadoop_secondary_namenode_server").first
 
 hdfs_site_vars = { :options => node[:hadoop][:hdfs_site] }
-hdfs_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}"
+#hdfs_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}"
 # TODO dfs.secondary.http.address should have port made into an attribute - maybe
-hdfs_site_vars[:options]['dfs.secondary.http.address'] = "#{secondary_namenode[:ipaddress]}:50090" if secondary_namenode
+#hdfs_site_vars[:options]['dfs.secondary.http.address'] = "#{secondary_namenode[:ipaddress]}:50090" if secondary_namenode
 
 template "#{chef_conf_dir}/hdfs-site.xml" do
   source "generic-site.xml.erb"
@@ -87,10 +90,10 @@ template "#{chef_conf_dir}/hdfs-site.xml" do
   variables hdfs_site_vars
 end
 
-jobtracker = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\\:\\:hadoop_jobtracker").first
+#jobtracker = search(:node, "chef_environment:#{node.chef_environment} AND recipes:cloudera\\:\\:hadoop_jobtracker").first
 
 mapred_site_vars = { :options => node[:hadoop][:mapred_site] }
-mapred_site_vars[:options]['mapred.job.tracker'] = "#{jobtracker[:ipaddress]}:#{node[:hadoop][:jobtracker_port]}" if jobtracker
+#mapred_site_vars[:options]['mapred.job.tracker'] = "#{jobtracker[:ipaddress]}:#{node[:hadoop][:jobtracker_port]}" if jobtracker
 
 template "#{chef_conf_dir}/mapred-site.xml" do
   source "generic-site.xml.erb"

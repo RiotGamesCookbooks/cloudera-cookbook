@@ -1,11 +1,16 @@
 #!/usr/bin/env ruby
 
-rack_map = {
-  <% @topology_nodes.each_with_index do |topology_node, idx| %>
-    '<%= topology_node[:ipaddress] %>' => '/<%= "#{topology_node[:datacenter]}/#{topology_node[:rack]}" %>'<%= ',' unless idx == (@topology_nodes.size - 1) %>
+rack_map = { 
+<% counter = @options.size %>
+<% @options.each do |key, value| %>
+  <% counter -= 1 %>
+    '<%= key %>' => '<%= value %>'<%= ',' unless counter == 0 %>
   <% end %>
 }
 
-if ARGV[0]
+
+if rack_map.has_key?(ARGV[0])
   puts rack_map[ARGV[0]]
+else
+  puts "/F11"
 end
