@@ -24,6 +24,7 @@ include_recipe "cloudera::repo"
 chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}"
 
 package "hadoop-#{node[:hadoop][:version]}"
+package "hadoop-#{node[:hadoop][:version]}-native"
 
 # Create some hadoop needed? dirs 
 # TODO abstract those 2 dirs to attributes
