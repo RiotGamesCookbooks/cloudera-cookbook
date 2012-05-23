@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: cloudera
-# Recipe:: hadoop_namenode
+# Recipe:: hadoop_secondary_namenode
 #
 # Author:: Istvan Szukacs (<istvan.szukacs@gmail.com>)
 # Copyright 2012, Riot Games
@@ -20,7 +20,7 @@
 
 include_recipe "cloudera"
 
-package "hadoop-#{node[:hadoop][:version]}-namenode"
+package "hadoop-#{node[:hadoop][:version]}-secondarynamenode"
 
 template "/usr/lib/hadoop-#{node[:hadoop][:version]}/bin/hadoop-config.sh" do
   source "hadoop_config.erb"
@@ -32,7 +32,7 @@ template "/usr/lib/hadoop-#{node[:hadoop][:version]}/bin/hadoop-config.sh" do
   )
 end
 
-template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-namenode" do
+template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-secondarynamenode" do
   mode 0755
   owner "root"
   group "root"
@@ -41,51 +41,7 @@ template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-namenode" do
   )
 end
 
-directory node[:hadoop][:hdfs_site]['dfs.name.dir'] do
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
-  #notify the hadoop namenode format execute
-end
-
-topology = { :options => node[:hadoop][:topology] }
-
-topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
-
-directory topology_dir do
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
-end
-
-template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
-  source "topology.rb.erb"
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  variables topology 
-end
-
-service "hadoop-#{node[:hadoop][:version]}-namenode" do
+service "hadoop-#{node[:hadoop][:version]}-secondarynamenode" do
   action [ :start, :enable ]
 end
 
-execute "make mapreduce dir file system" do
-  command "hadoop fs -mkdir /mapred"
-  user "hdfs"
-  environment ({'JAVA_HOME' => node[:java][:java_home]})
-  action :run
-  not_if "hadoop fs -test -d /mapred"
-end
-
-execute "chown /mapred dir" do
-  command "hadoop fs -chown mapred /mapred"
-  user "hdfs"
-  environment ({'JAVA_HOME' => node[:java][:java_home]})
-  action :run
-end
