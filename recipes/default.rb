@@ -25,6 +25,11 @@ chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_di
 
 package "hadoop-#{node[:hadoop][:version]}"
 package "hadoop-#{node[:hadoop][:version]}-native"
+package "nscd"
+
+service "nscd" do
+  action [ :start, :enable ]
+end
 
 # Create some hadoop needed? dirs 
 # TODO abstract those 2 dirs to attributes
