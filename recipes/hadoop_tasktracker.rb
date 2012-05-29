@@ -41,6 +41,28 @@ template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-tasktracker" do
   )
 end
 
+topology = { :options => node[:hadoop][:topology] }
+
+topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
+
+directory topology_dir do
+  mode 0755
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  recursive true
+end
+
+template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
+  source "topology.rb.erb"
+  mode 0755
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables topology
+end
+
+
 service "hadoop-#{node[:hadoop][:version]}-tasktracker" do
   action [ :start, :enable ]
 end
