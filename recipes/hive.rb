@@ -23,6 +23,7 @@ include_recipe "cloudera::repo"
 
 package "mysql-connector-java"
 package "hadoop-hive"
+package "hadoop-#{node[:hadoop][:version]}-native"
 
 hive_site_vars = { :options => node[:hive][:hive_site_options] }
 
