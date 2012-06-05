@@ -35,6 +35,10 @@ template "/etc/hive/conf/hive-site.xml" do
   action :create
   variables hive_site_vars
 end
+
+chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}"
+
+
 core_site_vars = { :options => node[:hadoop][:core_site] }
 
 #core_site_vars[:options]['fs.default.name'] = "hdfs://#{namenode[:ipaddress]}:#{node[:hadoop][:namenode_port]}"
