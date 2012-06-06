@@ -38,6 +38,14 @@ end
 
 chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}"
 
+directory chef_conf_dir do
+  mode 0755
+  owner "root"
+  group "root"
+  action :create
+  recursive true
+end
+
 
 core_site_vars = { :options => node[:hadoop][:core_site] }
 
