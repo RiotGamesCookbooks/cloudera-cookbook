@@ -25,6 +25,11 @@ package "mysql-connector-java"
 package "hadoop-hive"
 package "hadoop-#{node[:hadoop][:version]}-native"
 
+execute "copy_connector" do
+  command "cp /usr/share/java/mysql-connector-java.jar /usr/lib/hive/lib/mysql-connector-java.jar"
+end
+
+
 hive_site_vars = { :options => node[:hive][:hive_site_options] }
 
 template "/etc/hive/conf/hive-site.xml" do
