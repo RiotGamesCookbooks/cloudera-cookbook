@@ -33,6 +33,14 @@ package "hue-common-#{node[:hadoop][:hue_plugin_version]}"
 package "hue-jobsub-#{node[:hadoop][:hue_plugin_version]}"
 package "hue-shell-#{node[:hadoop][:hue_plugin_version]}"
 
+
+template "/etc/hue/hue.ini" do
+  mode 0755
+  owner "root"
+  group "root"
+end
+
+
 service "hue" do
   action [ :start, :enable ]
 end
