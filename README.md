@@ -4,7 +4,8 @@ Installs and configures [Cloudera's](http://www.cloudera.com/) Hadoop + Hive
 
 
 # Status
-Still under active development and testing. YMMV
+
+The cookbook is on a fairly good shape now, it was used to stand up a production cluster. New version is coming which will DRY up the codebase.
 
 # Requirements
 
