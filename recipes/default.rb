@@ -3,6 +3,7 @@
 # Recipe:: default
 #
 # Author:: Cliff Erson (<cerson@me.com>)
+# Author:: Istvan Szukacs (<istvan.szukacs@gmail.com>)
 # Copyright 2012, Riot Games
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +19,6 @@
 # limitations under the License.
 #
 
-#include_recipe "java"
 include_recipe "cloudera::repo"
 
 
@@ -30,23 +30,8 @@ service "nscd" do
   action [ :start, :enable ]
 end
 
-directory "/var/lib/hadoop/tmpdir" do
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
-end
-
-directory "/var/lib/hadoop/mapred" do
-  mode 0755
-  owner "mapred"
-  group "mapred"
-  action :create
-  recursive true
-end
-
 chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}"
+
 
 directory chef_conf_dir do
   mode 0755
@@ -58,8 +43,6 @@ end
 
 #namenode search is broken
 #namenode = find_cloudera_namenode(node.chef_environment)
-#
-
 #unless namenode
 #  Chef::Log.fatal "[Cloudera] Unable to find the cloudera namenode!"
 #  raise
@@ -167,6 +150,29 @@ template "#{chef_conf_dir}/slaves" do
   action :create
   variables( :nodes => slaves )
 end
+
+topology = { :options => node[:hadoop][:topology] }
+
+topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
+
+directory topology_dir do
+  mode 0755
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  recursive true
+end
+
+template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
+  source "topology.rb.erb"
+  mode 0755
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables topology
+end
+
+
 
 execute "update hadoop alternatives" do
   command "alternatives --install /etc/hadoop-#{node[:hadoop][:version]}/conf hadoop-#{node[:hadoop][:version]}-conf /etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]} 50"

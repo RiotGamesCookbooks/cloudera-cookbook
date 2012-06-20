@@ -41,7 +41,6 @@ template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-secondarynamenode" do
   )
 end
 
-
 chekpoint_directory = File.dirname(node[:hadoop][:hdfs_site]['fs.checkpoint.dir'])
 
 directory chekpoint_directory do
@@ -51,7 +50,6 @@ directory chekpoint_directory do
   action :create
   recursive true
 end
-
 
 service "hadoop-#{node[:hadoop][:version]}-secondarynamenode" do
   action [ :start, :enable ]

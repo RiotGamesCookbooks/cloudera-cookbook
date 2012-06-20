@@ -3,6 +3,7 @@
 # Recipe:: hadoop_datanode
 #
 # Author:: Cliff Erson (<cerson@me.com>)
+# Author:: Istvan Szukacs (<istvan.szukacs@gmail.com>)
 # Copyright 2012, Riot Games
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

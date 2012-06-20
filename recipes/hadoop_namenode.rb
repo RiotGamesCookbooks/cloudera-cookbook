@@ -3,6 +3,7 @@
 # Recipe:: hadoop_namenode
 #
 # Author:: Cliff Erson (<cerson@me.com>)
+# Author:: Istvan Szukacs (<istvan.szukacs@gmail.com>)
 # Copyright 2012, Riot Games
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,40 +42,12 @@ template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-namenode" do
   )
 end
 
-# TODO http://hadoop-karma.blogspot.com/2011/01/hadoop-cookbook-how-to-configure-hadoop.html
-# Turns out this dfs.name.dir can have many dirs split on , - figure this out
-# This should also notify an execute for 'hadooop namenode -format' 
-# currently Im not sure how to force Y into the above command as it requires interaction.
-# Also you can only format namenode once unless you want to whipe  your metadata 
-# so this directory needs a check to make sure its just not creating it again and again and triggering the notify
 directory node[:hadoop][:hdfs_site]['dfs.name.dir'] do
   mode 0755
   owner "hdfs"
   group "hdfs"
   action :create
   recursive true
-  #notify the hadoop namenode format execute
-end
-
-topology = { :options => node[:hadoop][:topology] }
-
-topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
-
-directory topology_dir do
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
-end
-
-template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
-  source "topology.rb.erb"
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  variables topology 
 end
 
 service "hadoop-#{node[:hadoop][:version]}-namenode" do

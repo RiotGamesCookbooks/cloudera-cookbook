@@ -18,7 +18,6 @@
 # limitations under the License.
 #
 
-#include_recipe "java"
 include_recipe "cloudera::repo"
 
 package "hadoop-hive-metastore"
