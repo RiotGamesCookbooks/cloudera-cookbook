@@ -23,16 +23,6 @@ include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-tasktracker"
 
-hadoop_tmp_dir = File.dirname(node[:hadoop][:core_site]['hadoop.tmp.dir'])
-
-directory hadoop_tmp_dir do
-  mode 0777
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
-end
-
 node[:hadoop][:mapred_site]['mapred.local.dir'].split(',').each do |dir|
   directory dir do
     mode 0755

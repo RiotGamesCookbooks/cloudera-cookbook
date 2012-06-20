@@ -23,16 +23,6 @@ include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-namenode"
 
-template "/usr/lib/hadoop-#{node[:hadoop][:version]}/bin/hadoop-config.sh" do
-  source "hadoop_config.erb"
-  mode 0755
-  owner "root"
-  group "root"
-  variables(
-    :java_home => node[:java][:java_home]
-  )
-end
-
 template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-namenode" do
   mode 0755
   owner "root"
@@ -42,7 +32,7 @@ template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-namenode" do
   )
 end
 
-directory node[:hadoop][:hdfs_site]['dfs.name.dir'] do
+node[:hadoop][:hdfs_site]['dfs.name.dir'].split(',').each do |dir|
   mode 0755
   owner "hdfs"
   group "hdfs"
@@ -52,19 +42,4 @@ end
 
 service "hadoop-#{node[:hadoop][:version]}-namenode" do
   action [ :start, :enable ]
-end
-
-execute "make mapreduce dir file system" do
-  command "hadoop fs -mkdir /mapred"
-  user "hdfs"
-  environment ({'JAVA_HOME' => node[:java][:java_home]})
-  action :run
-  not_if "hadoop fs -test -d /mapred"
-end
-
-execute "chown /mapred dir" do
-  command "hadoop fs -chown mapred /mapred"
-  user "hdfs"
-  environment ({'JAVA_HOME' => node[:java][:java_home]})
-  action :run
 end

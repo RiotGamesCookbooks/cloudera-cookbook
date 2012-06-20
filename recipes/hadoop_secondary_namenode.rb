@@ -22,16 +22,6 @@ include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-secondarynamenode"
 
-template "/usr/lib/hadoop-#{node[:hadoop][:version]}/bin/hadoop-config.sh" do
-  source "hadoop_config.erb"
-  mode 0755
-  owner "root"
-  group "root"
-  variables(
-    :java_home => node[:java][:java_home]
-  )
-end
-
 template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-secondarynamenode" do
   mode 0755
   owner "root"
@@ -41,14 +31,14 @@ template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-secondarynamenode" do
   )
 end
 
-chekpoint_directory = File.dirname(node[:hadoop][:hdfs_site]['fs.checkpoint.dir'])
-
-directory chekpoint_directory do
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
+node[:hadoop][:hdfs_site]['fs.checkpoint.dir'].split(',').each do |dir|
+  directory dir do
+    mode 0755
+    owner "hdfs"
+    group "hdfs"
+    action :create
+    recursive true
+  end
 end
 
 service "hadoop-#{node[:hadoop][:version]}-secondarynamenode" do

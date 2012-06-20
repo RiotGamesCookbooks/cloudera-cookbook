@@ -172,7 +172,25 @@ template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
   variables topology
 end
 
+hadoop_tmp_dir = File.dirname(node[:hadoop][:core_site]['hadoop.tmp.dir'])
 
+directory hadoop_tmp_dir do
+  mode 0777
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  recursive true
+end
+
+template "/usr/lib/hadoop-#{node[:hadoop][:version]}/bin/hadoop-config.sh" do
+  source "hadoop_config.erb"
+  mode 0755
+  owner "root"
+  group "root"
+  variables(
+    :java_home => node[:java][:java_home]
+  )
+end
 
 execute "update hadoop alternatives" do
   command "alternatives --install /etc/hadoop-#{node[:hadoop][:version]}/conf hadoop-#{node[:hadoop][:version]}-conf /etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]} 50"
