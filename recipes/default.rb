@@ -21,7 +21,6 @@
 #include_recipe "java"
 include_recipe "cloudera::repo"
 
-chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}"
 
 package "hadoop-#{node[:hadoop][:version]}"
 package "hadoop-#{node[:hadoop][:version]}-native"
@@ -31,9 +30,6 @@ service "nscd" do
   action [ :start, :enable ]
 end
 
-# Create some hadoop needed? dirs 
-# TODO abstract those 2 dirs to attributes
-# TODO might not need these
 directory "/var/lib/hadoop/tmpdir" do
   mode 0755
   owner "hdfs"
@@ -49,6 +45,8 @@ directory "/var/lib/hadoop/mapred" do
   action :create
   recursive true
 end
+
+chef_conf_dir = "/etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]}"
 
 directory chef_conf_dir do
   mode 0755
