@@ -4,7 +4,7 @@ maintainer_email "cerson@me.com"
 license          "Apache 2.0"
 description      "Installs and configures cloudera (hadoop/hive)"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.2.0"
+version          "1.0.0"
 
 %w{ centos redhat fedora }.each do |os|
   supports os

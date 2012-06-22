@@ -33,11 +33,13 @@ package "hue-common-#{node[:hadoop][:hue_plugin_version]}"
 package "hue-jobsub-#{node[:hadoop][:hue_plugin_version]}"
 package "hue-shell-#{node[:hadoop][:hue_plugin_version]}"
 
+hue_server_vars = { :options => node[:hue][:hue_server] }
 
 template "/etc/hue/hue.ini" do
   mode 0755
   owner "root"
   group "root"
+  variables hue_server_vars
 end
 
 
