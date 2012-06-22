@@ -40,6 +40,3 @@ node[:hadoop][:hdfs_site]['dfs.name.dir'].split(',').each do |dir|
   recursive true
 end
 
-service "hadoop-#{node[:hadoop][:version]}-namenode" do
-  action [ :start, :enable ]
-end

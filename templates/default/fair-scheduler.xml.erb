@@ -13,12 +13,14 @@
     </pool>
   <% end %>
 
-  <% @users.each do |user, user_value| %>
-    <user name="<%= user %>">
-      <% user_value.each do |k, v| %>
-      <%= "<#{k}>#{v}</#{k}>" %>
-      <% end %>
-    </user>
+  <% if @users %>
+    <% @users.each do |user, user_value| %>
+      <user name="<%= user %>">
+        <% user_value.each do |k, v| %>
+        <%= "<#{k}>#{v}</#{k}>" %>
+        <% end %>
+      </user>
+    <% end %>
   <% end %>
 
   <% @defaults.each do |k, v| %>
