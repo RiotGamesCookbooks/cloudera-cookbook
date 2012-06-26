@@ -33,10 +33,12 @@ template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-namenode" do
 end
 
 node[:hadoop][:hdfs_site]['dfs.name.dir'].split(',').each do |dir|
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
+  directory dir do
+    mode 0755
+    owner "hdfs"
+    group "hdfs"
+    action :create
+    recursive true
+  end
 end
 
