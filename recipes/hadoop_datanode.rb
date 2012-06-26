@@ -22,8 +22,12 @@
 include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-datanode"
+
 #Example hue-plugins-1.2.0.0+114.20-1.noarch 
-package "hue-plugins-#{node[:hadoop][:hue_plugin_version]}"
+package "hue-plugins" do
+  version "#{node[:hadoop][:hue_plugin_version]}"
+  action :install
+end
 
 template "/etc/init.d/hadoop-0.20-datanode" do
   mode 0755
