@@ -43,6 +43,9 @@ desc="Hadoop datanode daemon"
 SLEEP_TIME=5
 
 start() {
+  #this will disable Transparent Hugepage Support
+  #http://www.mjmwired.net/kernel/Documentation/vm/transhuge.txt
+  echo 'never' > /sys/kernel/mm/redhat_transparent_hugepage/enabled
   echo -n $"Starting $desc (hadoop-datanode): "
   daemon /usr/lib/hadoop-0.20/bin/hadoop-daemon.sh --config "/etc/hadoop-0.20/conf" start datanode $DAEMON_FLAGS
   RETVAL=$?
