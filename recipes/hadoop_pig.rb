@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: cloudera
-# Recipe:: pig
+# Recipe:: hadoop-pig
 #
 # Author:: Istvan Szukacs (<istvan.szukacs@gmail.com>)
 # Copyright 2012, Riot Games
@@ -17,5 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+include_recipe "cloudera::repo"
 
 package "hadoop-pig"
