@@ -32,6 +32,18 @@ template "/etc/init.d/hadoop-hive-server" do
   )
 end
 
+hive_env_vars = { :options => node[:hive][:hive_env_options] }
+
+template "/etc/hive/conf/hive-env.sh" do
+  source "hive-env.sh.erb"
+  mode 0644
+  owner "root"
+  group "root"
+  action :create
+  variables hive_env_vars
+end
+
+
 service "hadoop-hive-server" do
   action [ :start, :enable ]
 end
