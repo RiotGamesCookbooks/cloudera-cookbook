@@ -1,5 +1,7 @@
 # TODO This needs to actually use the gpg keys... derp.
 
+include_recipe "cloudera::default"
+
 case node[:platform]
 when "redhat", "centos", "scientific", "fedora"
 
