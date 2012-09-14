@@ -22,6 +22,34 @@ include_recipe "cloudera::repo"
 
 package "oozie"
 
+template "/etc/oozie/oozie-site.xml" do
+  source "oozie-site.xml.erb"
+  mode 0755
+  owner "root"
+  group "root"
+  action :create
+  )
+end
+
+template "/usr/lib/oozie/bin/oozied.sh" do
+  source "oozied.sh.erb"
+  mode 0755
+  owner "root"
+  group "root"
+  action :create
+  )
+end
+
+remote_file "/tmp/ext-2.2.zip" do
+  source "http://extjs.com/deploy/ext-2.2.zip"
+end
+
+remote_file "/tmp/mysql-connector-java-5.1.21.jar" do
+  source "http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.21/mysql-connector-java-5.1.21.jar"
+end
+
+execute "sudo -u oozie /usr/lib/oozie/bin/oozie-setup.sh -jars /tmp/mysql-connector-java-5.1.21.jar -extjs /tmp/ext-2.2.zip"
+
 service "oozie" do
   action [ :start, :enable ]
 end
