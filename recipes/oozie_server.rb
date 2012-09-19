@@ -28,7 +28,6 @@ template "/etc/oozie/oozie-site.xml" do
   owner "root"
   group "root"
   action :create
-  )
 end
 
 template "/usr/lib/oozie/bin/oozied.sh" do
@@ -37,7 +36,6 @@ template "/usr/lib/oozie/bin/oozied.sh" do
   owner "root"
   group "root"
   action :create
-  )
 end
 
 remote_file "/tmp/ext-2.2.zip" do
