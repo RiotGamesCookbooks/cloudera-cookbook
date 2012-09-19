@@ -38,6 +38,7 @@ template "/usr/lib/oozie/bin/oozied.sh" do
   action :create
 end
 
+#wrap this to something: if oozie_not_configured
 remote_file "/tmp/ext-2.2.zip" do
   source "http://extjs.com/deploy/ext-2.2.zip"
 end
@@ -47,7 +48,7 @@ remote_file "/tmp/mysql-connector-java-5.1.21.jar" do
 end
 
 execute "sudo -u oozie /usr/lib/oozie/bin/oozie-setup.sh -jars /tmp/mysql-connector-java-5.1.21.jar -extjs /tmp/ext-2.2.zip"
-
+######
 service "oozie" do
   action [ :start, :enable ]
 end
