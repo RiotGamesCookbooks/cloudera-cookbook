@@ -22,12 +22,15 @@ include_recipe "cloudera::repo"
 
 package "oozie"
 
+oozie_site_vars = { :options => node[:hadoop][:oozie_site] }
+
 template "/etc/oozie/oozie-site.xml" do
-  source "oozie-site.xml.erb"
+  source "generic-site.xml.erb"
   mode 0755
   owner "root"
   group "root"
   action :create
+  variables oozie_site_vars
 end
 
 template "/usr/lib/oozie/bin/oozied.sh" do
