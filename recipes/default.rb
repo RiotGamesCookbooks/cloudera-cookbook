@@ -91,6 +91,7 @@ template "#{chef_conf_dir}/mapred-site.xml" do
   variables mapred_site_vars
 end
 
+hadoop_policy_vars = { :options => node[:hadoop][:hadoop_policy] }
 template "#{chef_conf_dir}/hadoop-policy.xml" do
   source "hadoop-policy.xml.erb"
   mode 0644
