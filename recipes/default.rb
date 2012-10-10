@@ -91,6 +91,14 @@ template "#{chef_conf_dir}/mapred-site.xml" do
   variables mapred_site_vars
 end
 
+template "#{chef_conf_dir}/hadoop-policy.xml" do
+  source "hadoop-policy.xml.erb"
+  mode 0644
+  owner "hdfs"
+  group "hdfs"
+  action :create
+  variables hadoop_policy_vars
+end
 
 template "#{chef_conf_dir}/hadoop-env.sh" do
   mode 0755
