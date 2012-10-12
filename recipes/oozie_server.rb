@@ -41,7 +41,7 @@ template "/usr/lib/oozie/bin/oozied.sh" do
   action :create
 end
 
-unless File.exists? "/etc/oozie/oozieServerIsConfigured.chefFlag" do
+unless File.exists?("/etc/oozie/oozieServerIsConfigured.chefFlag") do
   remote_file "/tmp/ext-2.2.zip" do
     source "http://extjs.com/deploy/ext-2.2.zip"
   end
