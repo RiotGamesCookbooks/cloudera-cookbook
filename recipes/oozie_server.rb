@@ -41,17 +41,19 @@ template "/usr/lib/oozie/bin/oozied.sh" do
   action :create
 end
 
-#wrap this to something: if oozie_not_configured
-remote_file "/tmp/ext-2.2.zip" do
-  source "http://extjs.com/deploy/ext-2.2.zip"
+unless File.exists? "/etc/oozie/oozieServerIsConfigured.chefFlag" do
+  remote_file "/tmp/ext-2.2.zip" do
+    source "http://extjs.com/deploy/ext-2.2.zip"
+  end
+  
+  remote_file "/tmp/mysql-connector-java-5.1.21.jar" do
+    source "http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.21/mysql-connector-java-5.1.21.jar"
+  end
+  
+  execute "sudo -u oozie /usr/lib/oozie/bin/oozie-setup.sh -jars /tmp/mysql-connector-java-5.1.21.jar -extjs /tmp/ext-2.2.zip"
+  execute "sudo touch /etc/oozie/oozieServerIsConfigured.chefFlag"
 end
 
-remote_file "/tmp/mysql-connector-java-5.1.21.jar" do
-  source "http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.21/mysql-connector-java-5.1.21.jar"
-end
-
-execute "sudo -u oozie /usr/lib/oozie/bin/oozie-setup.sh -jars /tmp/mysql-connector-java-5.1.21.jar -extjs /tmp/ext-2.2.zip"
-######
 service "oozie" do
   action [ :start, :enable ]
 end
