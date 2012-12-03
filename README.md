@@ -42,6 +42,8 @@ Author:: Jamie Winsor (<jamie@vialstudios.com>)
 
 Author:: Istvan Szukacs (<istvan.szukacs@gmail.com>)
 
+Author:: Dani Abel Rayan (<dani.rayan@gmail.com>)
+
 Copyright 2012, Riot Games
 
 Licensed under the Apache License, Version 2.0 (the "License");
