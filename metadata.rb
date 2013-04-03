@@ -11,3 +11,5 @@ version          IO.read(File.join(File.dirname(__FILE__), 'VERSION')) rescue '0
 end
 
 depends 'yum'
+
+#hello world
