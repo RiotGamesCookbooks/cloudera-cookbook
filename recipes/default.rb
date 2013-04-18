@@ -202,5 +202,5 @@ template "/usr/lib/hadoop-#{node[:hadoop][:version]}/bin/hadoop-config.sh" do
 end
 
 execute "update hadoop alternatives" do
-  command "alternatives --install /etc/hadoop-#{node[:hadoop][:version]}/conf hadoop-#{node[:hadoop][:version]}-conf /etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]} 50"
+  command "update-alternatives --install /etc/hadoop-#{node[:hadoop][:version]}/conf hadoop-#{node[:hadoop][:version]}-conf /etc/hadoop-#{node[:hadoop][:version]}/#{node[:hadoop][:conf_dir]} 50"
 end
