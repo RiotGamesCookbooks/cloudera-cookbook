@@ -20,14 +20,17 @@
 
 package "hadoop-hbase-thrift"
 
-template "/etc/init.d/hadoop-hbase-thrift" do
-  source "hadoop_hbase_thrift.erb"
-  mode 0755
-  owner "root"
-  group "root"
-  variables(
-    :java_home => node[:java][:java_home]
-  )
+case node[:platform_family]
+when "rhel"
+  template "/etc/init.d/hadoop-hbase-thrift" do
+    source "hadoop_hbase_thrift.erb"
+    mode 0755
+    owner "root"
+    group "root"
+    variables(
+      :java_home => node[:java][:java_home]
+    )
+  end
 end
 
 service "hadoop-hbase-thrift" do

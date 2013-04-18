@@ -20,14 +20,17 @@
 
 package "hadoop-zookeeper-server"
 
-template "/etc/init.d/hadoop-zookeeper-server" do
-  source "hadoop_zookeeper_server.erb"
-  mode 0755
-  owner "root"
-  group "root"
-  variables(
-    :java_home => node[:java][:java_home]
-  )
+case node[:platform_family]
+when "rhel"
+  template "/etc/init.d/hadoop-zookeeper-server" do
+    source "hadoop_zookeeper_server.erb"
+    mode 0755
+    owner "root"
+    group "root"
+    variables(
+      :java_home => node[:java][:java_home]
+    )
+  end
 end
 
 service "hadoop-zookeeper-server" do

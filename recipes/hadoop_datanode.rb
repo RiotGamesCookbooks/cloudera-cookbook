@@ -29,13 +29,16 @@ package "hue-plugins" do
   action :install
 end
 
-template "/etc/init.d/hadoop-0.20-datanode" do
-  mode 0755
-  owner "root"
-  group "root"
-  variables(
-    :java_home => node[:java][:java_home]
-  )
+case node[:platform_family]
+when "rhel"
+  template "/etc/init.d/hadoop-0.20-datanode" do
+    mode 0755
+    owner "root"
+    group "root"
+    variables(
+      :java_home => node[:java][:java_home]
+    )
+  end
 end
 
 node[:hadoop][:hdfs_site]['dfs.data.dir'].split(',').each do |dir|
