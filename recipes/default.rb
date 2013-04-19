@@ -160,28 +160,33 @@ template "#{chef_conf_dir}/slaves" do
   variables( :nodes => slaves )
 end
 
-topology = { :options => node[:hadoop][:topology] }
+if node[:hadoop][:hdfs_site] && node[:hadoop][:hdfs_site]['topology.script.file.name']
+  topology = { :options => node[:hadoop][:topology] }
+  topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
 
-topology_dir = File.dirname(node[:hadoop][:hdfs_site]['topology.script.file.name'])
+  directory topology_dir do
+    mode 0755
+    owner "hdfs"
+    group "hdfs"
+    action :create
+    recursive true
+  end
 
-directory topology_dir do
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  recursive true
+  template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
+    source "topology.rb.erb"
+    mode 0755
+    owner "hdfs"
+    group "hdfs"
+    action :create
+    variables topology
+  end
 end
 
-template node[:hadoop][:hdfs_site]['topology.script.file.name'] do
-  source "topology.rb.erb"
-  mode 0755
-  owner "hdfs"
-  group "hdfs"
-  action :create
-  variables topology
+if node[:hadoop][:core_site]['hadoop.tmp.dir']
+  hadoop_tmp_dir = node[:hadoop][:core_site]['hadoop.tmp.dir']
+else
+  hadoop_tmp_dir = "/tmp"
 end
-
-hadoop_tmp_dir = File.dirname(node[:hadoop][:core_site]['hadoop.tmp.dir'])
 
 directory hadoop_tmp_dir do
   mode 0777
