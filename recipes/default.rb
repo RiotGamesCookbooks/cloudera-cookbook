@@ -182,7 +182,11 @@ if node[:hadoop][:hdfs_site] && node[:hadoop][:hdfs_site]['topology.script.file.
   end
 end
 
-hadoop_tmp_dir = File.dirname(node[:hadoop][:core_site]['hadoop.tmp.dir'])
+if node[:hadoop][:core_site]['hadoop.tmp.dir']
+  hadoop_tmp_dir = node[:hadoop][:core_site]['hadoop.tmp.dir']
+else
+  hadoop_tmp_dir = "/tmp"
+end
 
 directory hadoop_tmp_dir do
   mode 0777
