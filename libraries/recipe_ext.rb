@@ -2,7 +2,7 @@ class Chef
   module Cloudera
     module RecipeExt
       def find_cloudera_namenode(environment = nil)
-        if node.run_list.include?("recipes[cloudera::hadoop_namenode")
+        if node.run_list.include?("recipes[cloudera::hadoop_namenode]")
           node
         else
           search_string = "recipes:cloudera\:\:hadoop_namenode"
