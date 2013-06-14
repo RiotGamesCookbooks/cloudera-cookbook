@@ -10,10 +10,6 @@ version          IO.read(File.join(File.dirname(__FILE__), 'VERSION')) rescue '0
   supports os
 end
 
-case node[:platform_family]
-when "rhel"
-  depends 'yum'
-when "debian"
-  depends 'apt'
-end
+depends 'yum'
+depends 'apt'
 
