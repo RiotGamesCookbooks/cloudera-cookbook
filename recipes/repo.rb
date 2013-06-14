@@ -28,11 +28,12 @@ when "debian"
 
   include_recipe "apt"
 
-  apt_repository "cloudera-cdh3" do
+  apt_repository "cloudera-cdh#{node[:hadoop][:release]}" do
     uri "http://archive.cloudera.com/debian"
     key "http://archive.cloudera.com/debian/archive.key"
+#    distribution "#{node[:lsb][:codename]}-cdh#{node[:hadoop][:release]}"
+    distribution "maverick-cdh#{node[:hadoop][:release]}"
     components [ "contrib" ]
     action :add
   end
-
 end
