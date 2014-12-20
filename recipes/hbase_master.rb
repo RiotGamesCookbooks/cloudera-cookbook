@@ -20,14 +20,17 @@
 
 package "hadoop-hbase-master"
 
-template "/etc/init.d/hadoop-hbase-master" do
-  source "hadoop_hbase_master.erb"
-  mode 0755
-  owner "root"
-  group "root"
-  variables(
-    :java_home => node[:java][:java_home]
-  )
+case node[:platform_family]
+when "rhel"
+  template "/etc/init.d/hadoop-hbase-master" do
+    source "hadoop_hbase_master.erb"
+    mode 0755
+    owner "root"
+    group "root"
+    variables(
+      :java_home => node[:java][:java_home]
+    )
+  end
 end
 
 template "/usr/lib/hbase/bin/hbase-daemon.sh" do

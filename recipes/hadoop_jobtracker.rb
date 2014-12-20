@@ -23,13 +23,16 @@ include_recipe "cloudera"
 
 package "hadoop-#{node[:hadoop][:version]}-jobtracker"
 
-template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-jobtracker" do
-  mode 0755
-  owner "root"
-  group "root"
-  variables(
-    :java_home => node[:java][:java_home]
-  )
+case node[:platform_family]
+when "rhel"
+  template "/etc/init.d/hadoop-#{node[:hadoop][:version]}-jobtracker" do
+    mode 0755
+    owner "root"
+    group "root"
+    variables(
+      :java_home => node[:java][:java_home]
+    )
+  end
 end
 
 service "hadoop-#{node[:hadoop][:version]}-jobtracker" do
